@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,13 +9,18 @@ namespace Concur
 {
 	public class Folder
 	{
+		string path;
 		string name;
 		List<string> files;
 		List<string> folders;
 
-		public Folder(string nm)
+		public Folder(string pth)
 		{
-			name = nm;
+			int index = path.LastIndexOf(@"\");
+
+			path = pth;
+			name = path.Substring(index, pth.Length - index);
+
 			files = new List<string>();
 			folders = new List<string>();
 		}
@@ -28,7 +34,10 @@ namespace Concur
 		{
 			if (files.Count == 0)
 			{
-				// Get files
+				DirectoryInfo d = new DirectoryInfo(path);
+				FileInfo[] fils = d.GetFiles();
+				foreach (FileInfo f in fils)
+					files.Add(f.Name);
 			}
 
 			return files;
