@@ -11,58 +11,57 @@ namespace Concur
 	{
 		string path;
 		string name;
-		List<string> files;
-		List<string> folders;
+		DirectoryInfo info;
+		List<FileInfo> files;
+		List<Folder> folders;
 
 		public Folder(string pth)
 		{
-			int index = path.LastIndexOf(@"\");
+			DirectoryInfo d = new DirectoryInfo(pth);
 
 			path = pth;
-			name = path.Substring(index, pth.Length - index);
+			name = d.Name;
+			info = d;
 
-			files = new List<string>();
-			folders = new List<string>();
+			files = new List<FileInfo>();
+			folders = new List<Folder>();
 		}
 
-		public string Name()
+		public Folder(DirectoryInfo d)
 		{
-			return name;
-		}
+			path = d.FullName;
+			name = d.Name;
+			info = d;
 
-		public List<string> Files()
+			files = new List<FileInfo>();
+			folders = new List<Folder>();
+		}
+		
+		public string Name { get { return name; } }
+		public string Path { get { return path; } }
+
+		public List<FileInfo> Files()
 		{
 			if (files.Count == 0)
 			{
-				DirectoryInfo d = new DirectoryInfo(path);
-				FileInfo[] fils = d.GetFiles();
+				FileInfo[] fils = info.GetFiles();
 				foreach (FileInfo f in fils)
-					files.Add(f.Name);
+					files.Add(f);
 			}
 
 			return files;
 		}
 
-		public List<string> Folders()
+		public List<Folder> Folders()
 		{
 			if (folders.Count == 0)
 			{
-				// Get folders
+				DirectoryInfo[] fold = info.GetDirectories();
+				foreach (DirectoryInfo dir in fold)
+					folders.Add(new Folder(dir));
 			}
 
 			return folders;
 		}
-
-		public Dictionary<string, List<string>> Contents()
-		{
-			Dictionary<string, List<string>> dic = new Dictionary<string, List<string>>
-			{
-				{ "files", Files() },
-				{ "Folders", Folders() }
-			};
-
-			return dic;
-		}
-
 	}
 }

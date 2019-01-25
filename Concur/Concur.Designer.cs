@@ -28,34 +28,57 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.button1 = new System.Windows.Forms.Button();
+			this.btnReg = new System.Windows.Forms.Button();
+			this.txtSource = new System.Windows.Forms.TextBox();
+			this.txtDest = new System.Windows.Forms.TextBox();
 			this.SuspendLayout();
 			// 
-			// button1
+			// btnReg
 			// 
-			this.button1.Location = new System.Drawing.Point(336, 94);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(75, 23);
-			this.button1.TabIndex = 0;
-			this.button1.Text = "button1";
-			this.button1.UseVisualStyleBackColor = true;
-			this.button1.Click += new System.EventHandler(this.button1_Click);
+			this.btnReg.Location = new System.Drawing.Point(161, 176);
+			this.btnReg.Name = "btnReg";
+			this.btnReg.Size = new System.Drawing.Size(75, 23);
+			this.btnReg.TabIndex = 0;
+			this.btnReg.Text = "Register";
+			this.btnReg.UseVisualStyleBackColor = true;
+			this.btnReg.Click += new System.EventHandler(this.btnReg_Click);
+			// 
+			// txtSource
+			// 
+			this.txtSource.Location = new System.Drawing.Point(161, 69);
+			this.txtSource.Name = "txtSource";
+			this.txtSource.Size = new System.Drawing.Size(144, 20);
+			this.txtSource.TabIndex = 1;
+			this.txtSource.Text = "D:\\concurtest\\testsrc";
+			// 
+			// txtDest
+			// 
+			this.txtDest.Location = new System.Drawing.Point(161, 124);
+			this.txtDest.Name = "txtDest";
+			this.txtDest.Size = new System.Drawing.Size(144, 20);
+			this.txtDest.TabIndex = 2;
+			this.txtDest.Text = "D:\\concurtest\\testdes";
 			// 
 			// Concur
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(800, 450);
-			this.Controls.Add(this.button1);
+			this.Controls.Add(this.txtDest);
+			this.Controls.Add(this.txtSource);
+			this.Controls.Add(this.btnReg);
 			this.Name = "Concur";
 			this.Text = "Form1";
 			this.ResumeLayout(false);
+			this.PerformLayout();
 
 		}
 
 		#endregion
 
-		private System.Windows.Forms.Button button1;
+		private System.Windows.Forms.Button btnReg;
+		private System.Windows.Forms.TextBox txtSource;
+		private System.Windows.Forms.TextBox txtDest;
 	}
 }
 

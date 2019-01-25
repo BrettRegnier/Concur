@@ -17,17 +17,19 @@ namespace Concur
 		{
 			InitializeComponent();
 
-			Button btn = new Button();
-			btn.Left = 10;
-			btn.Top = 10;
-			btn.Width = 100;
-			btn.Height = 60;
-			btn.Click += SyncFolders;
+			//Button btn = new Button();
+			//btn.Left = 10;
+			//btn.Top = 10;
+			//btn.Width = 100;
+			//btn.Height = 60;
+			//btn.Click += SyncFolders;
 		}
 
-		public void SyncFolders(object sender, EventArgs e)
+		private void btnReg_Click(object sender, EventArgs e)
 		{
-			
+			FileSyncer fileSyncer = new FileSyncer(txtSource.Text, txtDest.Text);
+
+			fileSyncer.Sync();
 		}
 	}
 }

@@ -52,10 +52,12 @@
     <Compile Include="Concur.Designer.cs">
       <DependentUpon>Concur.cs</DependentUpon>
     </Compile>
+    <Compile Include="File.cs" />
     <Compile Include="FileSyncer.cs" />
     <Compile Include="Folder.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SyncManager.cs" />
     <EmbeddedResource Include="Concur.resx">
       <DependentUpon>Concur.cs</DependentUpon>
     </EmbeddedResource>
