@@ -70,7 +70,7 @@ namespace Concur
 
 		private void btnSync_Click(object sender, EventArgs e)
 		{
-			// Force a sync
+			manager.SyncAll();
 		}
 
 		private void btnOverrideDest_Click(object sender, EventArgs e)
@@ -87,6 +87,7 @@ namespace Concur
 		private void timSync_Tick(object sender, EventArgs e)
 		{
 			// sync the folders. This should have a configuration for the interval
+			manager.SyncAll();
 		}
 	}
 }

@@ -62,6 +62,7 @@ namespace Concur
 				if (r == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
 				{
 					txtSrc.Text = fbd.SelectedPath;
+					txtSrc.ForeColor = Color.Black;
 				}
 			}
 		}
@@ -74,6 +75,7 @@ namespace Concur
 				if (r == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
 				{
 					txtDest.Text = fbd.SelectedPath;
+					txtDest.ForeColor = Color.Black;
 				}
 			}
 		}
