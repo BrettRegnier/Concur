@@ -16,7 +16,7 @@ namespace Concur
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new Concur());
+			Application.Run(new ConcurMain());
 		}
 	}
 }

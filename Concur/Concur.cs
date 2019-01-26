@@ -10,26 +10,83 @@ using System.Windows.Forms;
 
 namespace Concur
 {
-	public partial class Concur : Form
+	public partial class ConcurMain : Form
 	{
+		static SyncManager manager;
 
-		public Concur()
+		public ConcurMain()
 		{
 			InitializeComponent();
-
-			//Button btn = new Button();
-			//btn.Left = 10;
-			//btn.Top = 10;
-			//btn.Width = 100;
-			//btn.Height = 60;
-			//btn.Click += SyncFolders;
 		}
 
-		private void btnReg_Click(object sender, EventArgs e)
+		private void ConcurMain_Load(object sender, EventArgs e)
 		{
-			FileSyncer fileSyncer = new FileSyncer(txtSource.Text, txtDest.Text);
+			btnEdit.Left = ((dgSyncs.Left + dgSyncs.Right) / 2) - btnEdit.Width / 2;
 
-			fileSyncer.Sync();
+			// Load from file, if no file is found then it returns a blank manager
+			manager = SyncManager.LoadFileSyncs();
+
+			RefreshDataGrid();
+		}
+
+		private void btnAdd_Click(object sender, EventArgs e)
+		{
+			AddSync addForm = new AddSync();
+			var result = addForm.ShowDialog();
+			if (result == DialogResult.OK)
+			{
+				manager.RegisterSync(addForm.fileSyncer);
+			}
+			RefreshDataGrid();
+		}
+
+		public void RefreshDataGrid()
+		{
+			dgSyncs.AllowUserToAddRows = true;
+			dgSyncs.Rows.Clear();
+			foreach (FileSyncer fs in manager.FileSyncers())
+			{
+				DataGridViewRow row = (DataGridViewRow)dgSyncs.Rows[0].Clone();
+				row.Cells[0].Value = fs.ID;
+				row.Cells[1].Value = fs.Source().Path;
+				row.Cells[2].Value = fs.Destination().Path;
+				row.Cells[3].Value = fs.LastSync;
+				dgSyncs.Rows.Add(row);
+			}
+
+			dgSyncs.AllowUserToAddRows = false;
+		}
+
+		private void btnEdit_Click(object sender, EventArgs e)
+		{
+
+			manager.SaveFileSyncs();
+		}
+
+		private void btnDelete_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void btnSync_Click(object sender, EventArgs e)
+		{
+			// Force a sync
+		}
+
+		private void btnOverrideDest_Click(object sender, EventArgs e)
+		{
+			// Force the destination overriding
+		}
+
+		private void btnOverrideSrc_Click(object sender, EventArgs e)
+		{
+			// Force the source overriding
+
+		}
+
+		private void timSync_Tick(object sender, EventArgs e)
+		{
+			// sync the folders. This should have a configuration for the interval
 		}
 	}
 }
