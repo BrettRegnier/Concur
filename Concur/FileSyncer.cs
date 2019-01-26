@@ -17,6 +17,7 @@ namespace Concur
 			ID = (00000 + count).ToString();
 			source = null;
 			destination = null;
+			LastSync = "Never";
 		}
 
 		public FileSyncer(string id, string src, string des, string lastSync = "")

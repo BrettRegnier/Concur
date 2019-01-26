@@ -16,12 +16,28 @@ namespace Concur
 		public AddSync(FileSyncer fs = null)
 		{
 			InitializeComponent();
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			fileSyncer = fs;
+
+			txtSrc.Text = "Example: C:\\MyFolder";
+			txtSrc.ForeColor = Color.DarkGray;
+			txtDest.Text = "Example: C:\\MyFolder";
+			txtDest.ForeColor = Color.DarkGray;
+
+			txtSrc.GotFocus += RemoveText;
+			txtSrc.LostFocus += AddText;
+
+			txtDest.GotFocus += RemoveText;
+			txtDest.LostFocus += AddText;
 		}
 
 		private void btnOk_Click(object sender, EventArgs e)
 		{
+			// error check for bad folders, such as 
+			//C:/ 
+			//C:/Windows
+			//C:/ProgramFiles/
+
 			if (fileSyncer == null)
 			{
 				fileSyncer = new FileSyncer();
@@ -40,12 +56,43 @@ namespace Concur
 
 		private void btnSrc_Click(object sender, EventArgs e)
 		{
-
+			using (var fbd = new FolderBrowserDialog())
+			{
+				DialogResult r = fbd.ShowDialog();
+				if (r == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+				{
+					txtSrc.Text = fbd.SelectedPath;
+				}
+			}
 		}
 
 		private void btnDest_Click(object sender, EventArgs e)
 		{
+			using (var fbd = new FolderBrowserDialog())
+			{
+				DialogResult r = fbd.ShowDialog();
+				if (r == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+				{
+					txtDest.Text = fbd.SelectedPath;
+				}
+			}
+		}
 
+		public void RemoveText(object sender, EventArgs e)
+		{
+			if (((TextBox)sender).Text == "Example: C:\\MyFolder")
+				((TextBox)sender).Text = "";
+
+			((TextBox)sender).ForeColor = Color.Black;
+		}
+
+		public void AddText(object sender, EventArgs e)
+		{
+			if (string.IsNullOrWhiteSpace(((TextBox)sender).Text))
+			{
+				((TextBox)sender).Text = "Example: C:\\MyFolder";
+				((TextBox)sender).ForeColor = Color.DarkGray;
+			}
 		}
 	}
 }

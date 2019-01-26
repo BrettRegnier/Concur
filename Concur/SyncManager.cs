@@ -15,7 +15,7 @@ namespace Concur
 		[XmlIgnore]
 		private List<FileSyncer> fileSyncers;
 		[XmlIgnore]
-		private static string dir = "./FileSyncs";
+		private static string dir = "./FileSyncs.xml";
 
 		private XElement SyncSaves;
 
@@ -58,7 +58,7 @@ namespace Concur
 				elm.Add(new XElement("ID", fs.ID));
 				elm.Add(new XElement("Source", fs.Source().Path));
 				elm.Add(new XElement("Destination", fs.Destination().Path));
-				elm.Add(new XElement("LastSync"), fs.LastSync);
+				elm.Add(new XElement("LastSync", fs.LastSync));
 
 			}
 			SyncSaves.Save(dir);
