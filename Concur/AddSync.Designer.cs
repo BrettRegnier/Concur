@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddSync));
 			this.txtSrc = new System.Windows.Forms.TextBox();
 			this.btnCancel = new System.Windows.Forms.Button();
 			this.btnOk = new System.Windows.Forms.Button();
@@ -123,6 +124,7 @@
 			this.Controls.Add(this.btnCancel);
 			this.Controls.Add(this.txtDest);
 			this.Controls.Add(this.txtSrc);
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.Name = "AddSync";
 			this.Text = "Add Folder Sync";

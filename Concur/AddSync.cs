@@ -13,11 +13,21 @@ namespace Concur
 	public partial class AddSync : Form
 	{
 		public FileSyncer fileSyncer;
-		public AddSync(FileSyncer fs = null)
+		public AddSync(FileSyncer fs)
 		{
+			init();
+			fileSyncer = fs;
+		}
+
+		public AddSync()
+		{
+			init();
+		}
+
+		public void init()
+		{ 
 			InitializeComponent();
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-			fileSyncer = fs;
 
 			txtSrc.Text = "Example: C:\\MyFolder";
 			txtSrc.ForeColor = Color.DarkGray;

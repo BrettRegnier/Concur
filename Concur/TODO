@@ -1,6 +1,18 @@
-﻿-Add paralleliztion
--Add all buttons in Concur form.
--Error checking
+﻿
 -Last synced
--ID checking
+
+
+-Create log
+-Configurations
+	-Sync overwrite options
+	-Sync interval
+	-Close on exit button or minimize to tray
+	-Start up at windows log in?
+	-Sync delay time
+-about and help button
+-Error checking
 -duplicate sync checking
+-Installer
+
+Feature:
+-Split syncing into 2 way sync, and master - slaves sync 

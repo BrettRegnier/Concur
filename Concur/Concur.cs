@@ -21,12 +21,34 @@ namespace Concur
 
 		private void ConcurMain_Load(object sender, EventArgs e)
 		{
-			btnEdit.Left = ((dgSyncs.Left + dgSyncs.Right) / 2) - btnEdit.Width / 2;
-
 			// Load from file, if no file is found then it returns a blank manager
 			manager = SyncManager.LoadFileSyncs();
 
 			RefreshDataGrid();
+			CreateTrayMenu();
+		}
+
+		private void CreateTrayMenu()
+		{
+			ContextMenuStrip trayMenu = new ContextMenuStrip();
+			trayMenu.Items.Add("Restore");
+			trayMenu.Items.Add("Options");
+			trayMenu.Items.Add("Exit");
+
+			trayMenu.Items[0].Click += (sender, e) =>
+			{
+				RestoreWindow();
+			};
+			trayMenu.Items[1].Click += (sender, e) =>
+			{
+				Options();
+			};
+			trayMenu.Items[2].Click += (sender, e) =>
+			{
+				this.Close();
+			};
+
+			trayIcon.ContextMenuStrip = trayMenu;
 		}
 
 		private void btnAdd_Click(object sender, EventArgs e)
@@ -40,7 +62,7 @@ namespace Concur
 			RefreshDataGrid();
 		}
 
-		public void RefreshDataGrid()
+		private void RefreshDataGrid()
 		{
 			dgSyncs.AllowUserToAddRows = true;
 			dgSyncs.Rows.Clear();
@@ -59,35 +81,92 @@ namespace Concur
 
 		private void btnEdit_Click(object sender, EventArgs e)
 		{
+			string id = (string)dgSyncs[0, dgSyncs.CurrentCell.RowIndex].Value;
+			AddSync ad = new AddSync(manager.GetSyncer(id));
 
 			manager.SaveFileSyncs();
+			RefreshDataGrid();
 		}
 
 		private void btnDelete_Click(object sender, EventArgs e)
 		{
-
+			string id = (string)dgSyncs[0, dgSyncs.CurrentCell.RowIndex].Value;
+			manager.Delete(id);
+			manager.SaveFileSyncs();
+			RefreshDataGrid();
 		}
 
 		private void btnSync_Click(object sender, EventArgs e)
 		{
-			manager.SyncAll();
-		}
-
-		private void btnOverrideDest_Click(object sender, EventArgs e)
-		{
-			// Force the destination overriding
-		}
-
-		private void btnOverrideSrc_Click(object sender, EventArgs e)
-		{
-			// Force the source overriding
-
+			Sync();
 		}
 
 		private void timSync_Tick(object sender, EventArgs e)
 		{
 			// sync the folders. This should have a configuration for the interval
+			Sync();
+		}
+
+		private void Sync()
+		{
 			manager.SyncAll();
+			timCheckLast.Enabled = true;
+		}
+
+		private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Configuration config = new Configuration();
+			config.ShowDialog();
+		}
+
+		private void showLogToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void ConcurMain_Resize(object sender, EventArgs e)
+		{
+			if (FormWindowState.Minimized == WindowState)
+			{
+				Hide();
+			}
+		}
+
+		private void trayIcon_MouseDoubleClick(object sender, MouseEventArgs e)
+		{
+			RestoreWindow();
+		}
+
+		private void RestoreWindow()
+		{
+			Show();
+			WindowState = FormWindowState.Normal;
+		}
+
+		private void Options()
+		{
+		}
+
+		private void ConcurMain_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			trayIcon.Visible = false;
+			trayIcon.Icon = null;
+		}
+
+		private void timCheckLast_Tick(object sender, EventArgs e)
+		{
+			if (manager.WaitingForConfirm())
+			{
+				RefreshDataGrid();
+				manager.ContinueTask();
+			}
+
+			timCheckLast.Enabled = false;
 		}
 	}
 }

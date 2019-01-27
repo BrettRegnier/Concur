@@ -16,6 +16,12 @@ namespace Concur
 		private List<FileSyncer> fileSyncers;
 		[XmlIgnore]
 		private static string dir = "./FileSyncs.xml";
+		[XmlIgnore]
+		bool syncing = false;
+		[XmlIgnore]
+		bool continueTask = true;
+		[XmlIgnore]
+		bool waitingForConfirm = false;
 
 		private XElement SyncSaves;
 
@@ -74,16 +80,68 @@ namespace Concur
 
 		public void SyncAll()
 		{
+			if (syncing == false)
+			{
+				syncing = true;
+				this.fileSyncers = LoadFileSyncs().fileSyncers;
+				(new Task(new Action(ParallelSync))).Start();
+
+			}
+		}
+
+		private void ParallelSync()
+		{
 			foreach (FileSyncer fileSyncer in fileSyncers)
 			{
 				fileSyncer.Sync();
+			}
+
+			waitingForConfirm = true;
+			while (!continueTask)
+			{ }
+			SaveFileSyncs();
+			UnloadAllFileSync();
+			continueTask = false;
+			syncing = false;
+			waitingForConfirm = false;
+		}
+
+		public void UpdateSync(FileSyncer fs)
+		{
+			foreach (FileSyncer tmp in fileSyncers)
+			{
+				if (tmp.Signature() == fs.Signature())
+				{
+					tmp.Source(fs.Source());
+					tmp.Destination(fs.Destination());
+				}
 			}
 		}
 
 		public void RegisterSync(FileSyncer fs)
 		{
-			fileSyncers.Add(fs);
-			SaveFileSyncs();
+			// Check duplicates before adding
+			if (CheckForDuplicate(fs))
+			{
+				fileSyncers.Add(fs);
+				SaveFileSyncs();
+			}
+			else
+			{
+				throw new Exception("Error. Duplicate synchronization found");
+			}
+
+		}
+
+		// True == no duplicate, false == duplicate
+		private bool CheckForDuplicate(FileSyncer fs)
+		{
+			foreach (FileSyncer tmp in fileSyncers)
+			{
+				if (tmp.Signature() == fs.Signature())
+					return false;
+			}
+			return true;
 		}
 
 		public void Delete(string id)
@@ -98,6 +156,25 @@ namespace Concur
 		public List<FileSyncer> FileSyncers()
 		{
 			return fileSyncers;
+		}
+
+		public FileSyncer GetSyncer(string id)
+		{
+			for (int i = 0; i < fileSyncers.Count; i++)
+				if (fileSyncers[i].ID == id)
+					return fileSyncers[i];
+
+			return null;
+		}
+
+		public void ContinueTask()
+		{
+			continueTask = true;
+		}
+
+		public bool WaitingForConfirm()
+		{
+			return waitingForConfirm;
 		}
 	}
 }

@@ -9,11 +9,13 @@ namespace Concur
 		static int count;
 		Folder source;
 		Folder destination;
+		private int signature;
 		public string ID { get; private set; }
 		public string LastSync { get; private set; }
 
 		public FileSyncer()
 		{
+			signature = 0;
 			count++;
 			ID = (00000 + count).ToString();
 			source = null;
@@ -23,6 +25,7 @@ namespace Concur
 
 		public FileSyncer(string id, string src, string des, string lastSync = "")
 		{
+			count = System.Convert.ToInt32(id);
 			ID = id;
 			source = new Folder(src);
 			destination = new Folder(des);
@@ -31,16 +34,32 @@ namespace Concur
 				LastSync = "Never";
 			else
 				LastSync = lastSync;
+
+			CalculateSignature();
+		}
+
+		private void CalculateSignature()
+		{
+			long result = 0;
+			for (int i = 0; i < source.Path.Length; i++)
+			{
+				result += System.Convert.ToInt32(source.Path[i]);
+			}
+			for (int i = 0; i < destination.Path.Length; i++)
+			{
+				result += System.Convert.ToInt32(GetHashCode());
+			}
+			signature = (int)(result % int.MaxValue);
 		}
 
 		// return false for failure, return true for success
 		private bool Sync(Folder src, Folder dest)
 		{
+			if (!Directory.Exists(src.Path))
+				Directory.CreateDirectory(src.Path);
 			if (!Directory.Exists(dest.Path))
-			{
 				Directory.CreateDirectory(dest.Path);
-			}
-			// TODO check which file is newer and then replace between the two based on file age
+			
 			if (src != null && dest != null)
 			{
 				List<FileInfo> srcToSync = new List<FileInfo>();
@@ -90,6 +109,7 @@ namespace Concur
 						}
 					}
 
+					// Since the file doesn't exist in the source then the destination must be newer
 					if (fndFile == false)
 					{
 						destToSync.Add(df);
@@ -122,7 +142,9 @@ namespace Concur
 
 		public bool Sync()
 		{
-			return Sync(source, destination);
+			bool result = Sync(source, destination);
+			if (result) LastSync = System.DateTime.UtcNow.ToString();
+			return result;
 		}
 
 		public Folder Source()
@@ -135,6 +157,11 @@ namespace Concur
 			source = new Folder(pth);
 		}
 
+		public void Source(Folder fold)
+		{
+			source = fold;
+		}
+
 		public Folder Destination()
 		{
 			return destination;
@@ -143,6 +170,16 @@ namespace Concur
 		public void Destination(string pth)
 		{
 			destination = new Folder(pth);
+		}
+
+		public void Destination(Folder fold)
+		{
+			destination = fold;
+		}
+
+		public int Signature()
+		{
+			return signature;
 		}
 	}
 }
