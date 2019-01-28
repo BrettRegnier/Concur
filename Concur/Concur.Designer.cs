@@ -46,6 +46,7 @@
 			this.Source = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Destination = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.LastSync = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.lsLog = new System.Windows.Forms.ListBox();
 			((System.ComponentModel.ISupportInitialize)(this.dgSyncs)).BeginInit();
 			this.menu.SuspendLayout();
 			this.SuspendLayout();
@@ -185,11 +186,22 @@
 			this.LastSync.ReadOnly = true;
 			this.LastSync.Width = 150;
 			// 
+			// lsLog
+			// 
+			this.lsLog.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.lsLog.FormattingEnabled = true;
+			this.lsLog.Location = new System.Drawing.Point(12, 323);
+			this.lsLog.Name = "lsLog";
+			this.lsLog.Size = new System.Drawing.Size(538, 186);
+			this.lsLog.TabIndex = 8;
+			// 
 			// ConcurMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(562, 511);
+			this.ClientSize = new System.Drawing.Size(562, 316);
+			this.Controls.Add(this.lsLog);
 			this.Controls.Add(this.btnSync);
 			this.Controls.Add(this.dgSyncs);
 			this.Controls.Add(this.btnDelete);
@@ -229,5 +241,6 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn Source;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Destination;
 		private System.Windows.Forms.DataGridViewTextBoxColumn LastSync;
+		private System.Windows.Forms.ListBox lsLog;
 	}
 }

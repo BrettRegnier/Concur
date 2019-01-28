@@ -1,8 +1,4 @@
 ﻿
--Last synced
-
-
--Create log
 -Configurations
 	-Sync overwrite options
 	-Sync interval
@@ -11,8 +7,8 @@
 	-Sync delay time
 -about and help button
 -Error checking
--duplicate sync checking
 -Installer
 
 Feature:
 -Split syncing into 2 way sync, and master - slaves sync 
+-Create log

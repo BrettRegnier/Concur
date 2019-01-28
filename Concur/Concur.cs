@@ -26,6 +26,8 @@ namespace Concur
 
 			RefreshDataGrid();
 			CreateTrayMenu();
+			Height = 355; // 560 with log enabled, 355 hidden
+			lsLog.Visible = false;
 		}
 
 		private void CreateTrayMenu()
