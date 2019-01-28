@@ -31,6 +31,10 @@
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConcurMain));
 			this.dgSyncs = new System.Windows.Forms.DataGridView();
+			this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Source = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Destination = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.LastSync = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.btnAdd = new System.Windows.Forms.Button();
 			this.btnEdit = new System.Windows.Forms.Button();
 			this.btnDelete = new System.Windows.Forms.Button();
@@ -42,10 +46,6 @@
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.trayIcon = new System.Windows.Forms.NotifyIcon(this.components);
 			this.timCheckLast = new System.Windows.Forms.Timer(this.components);
-			this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Source = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Destination = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.LastSync = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.lsLog = new System.Windows.Forms.ListBox();
 			((System.ComponentModel.ISupportInitialize)(this.dgSyncs)).BeginInit();
 			this.menu.SuspendLayout();
@@ -68,6 +68,34 @@
 			this.dgSyncs.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
 			this.dgSyncs.Size = new System.Drawing.Size(538, 228);
 			this.dgSyncs.TabIndex = 0;
+			// 
+			// ID
+			// 
+			this.ID.HeaderText = "ID";
+			this.ID.Name = "ID";
+			this.ID.ReadOnly = true;
+			this.ID.Width = 50;
+			// 
+			// Source
+			// 
+			this.Source.HeaderText = "Source Folder";
+			this.Source.Name = "Source";
+			this.Source.ReadOnly = true;
+			this.Source.Width = 150;
+			// 
+			// Destination
+			// 
+			this.Destination.HeaderText = "Destination Folder";
+			this.Destination.Name = "Destination";
+			this.Destination.ReadOnly = true;
+			this.Destination.Width = 150;
+			// 
+			// LastSync
+			// 
+			this.LastSync.HeaderText = "Last Synced";
+			this.LastSync.Name = "LastSync";
+			this.LastSync.ReadOnly = true;
+			this.LastSync.Width = 150;
 			// 
 			// btnAdd
 			// 
@@ -157,34 +185,6 @@
 			// timCheckLast
 			// 
 			this.timCheckLast.Tick += new System.EventHandler(this.timCheckLast_Tick);
-			// 
-			// ID
-			// 
-			this.ID.HeaderText = "ID";
-			this.ID.Name = "ID";
-			this.ID.ReadOnly = true;
-			this.ID.Width = 50;
-			// 
-			// Source
-			// 
-			this.Source.HeaderText = "Source Folder";
-			this.Source.Name = "Source";
-			this.Source.ReadOnly = true;
-			this.Source.Width = 150;
-			// 
-			// Destination
-			// 
-			this.Destination.HeaderText = "Destination Folder";
-			this.Destination.Name = "Destination";
-			this.Destination.ReadOnly = true;
-			this.Destination.Width = 150;
-			// 
-			// LastSync
-			// 
-			this.LastSync.HeaderText = "Last Synced";
-			this.LastSync.Name = "LastSync";
-			this.LastSync.ReadOnly = true;
-			this.LastSync.Width = 150;
 			// 
 			// lsLog
 			// 
