@@ -55,11 +55,24 @@ namespace Concur
 		// return false for failure, return true for success
 		private bool Sync(Folder src, Folder dest)
 		{
+			// TODO build out a loop for building the directory on both source and destination.
+			string srcDrive = Path.GetPathRoot(src.Path);
+			string destDrive = Path.GetPathRoot(dest.Path);
+
+
+			if (Directory.Exists(srcDrive))
+			{
+
+			}
+
+			/* end of feature */
+
 			if (!Directory.Exists(src.Path))
 				Directory.CreateDirectory(src.Path);
+
 			if (!Directory.Exists(dest.Path))
 				Directory.CreateDirectory(dest.Path);
-			
+
 			if (src != null && dest != null)
 			{
 				List<FileInfo> srcToSync = new List<FileInfo>();
@@ -72,7 +85,7 @@ namespace Concur
 					{
 						if (sf.Name == df.Name)
 						{
-							if (System.IO.File.GetLastWriteTime(sf.FullName) >= System.IO.File.GetLastWriteTime(df.FullName))
+							if (System.IO.File.GetLastWriteTime(sf.FullName) > System.IO.File.GetLastWriteTime(df.FullName))
 							{
 
 								// the source is newer than the destination
@@ -80,13 +93,14 @@ namespace Concur
 								fndFile = true;
 								break;
 							}
-							else
+							else if (System.IO.File.GetLastWriteTime(sf.FullName) < System.IO.File.GetLastWriteTime(df.FullName))
 							{
-								// the destination is new than the source
+								// the destination is newer than the source
 								destToSync.Add(df);
 								fndFile = true;
 								break;
 							}
+							// other wise don't bother trying to write overtop
 						}
 					}
 
