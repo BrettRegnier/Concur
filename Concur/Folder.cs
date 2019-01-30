@@ -36,7 +36,7 @@ namespace Concur
 			files = new List<FileInfo>();
 			folders = new List<Folder>();
 		}
-		
+
 		public string Name { get { return name; } }
 		public string Path { get { return path; } }
 
@@ -62,6 +62,45 @@ namespace Concur
 			}
 
 			return folders;
+		}
+
+		public bool CheckPathExists()
+		{
+			bool exists = false;
+
+			// gets the root first.
+			string[] subDir = path.Split('\\');
+			string curPath = subDir[0];
+			if (Directory.Exists(curPath))
+			{
+				exists = true;
+				for (int i = 1; i < subDir.Length; i++)
+				{
+					curPath += "\\" + subDir[i];
+					if (!Directory.Exists(curPath))
+					{
+						exists = false;
+						break;
+					}
+				}
+			}
+			else
+			{
+				throw new Exception("The Drive " + curPath + "\\ does is not detected");
+			}
+
+			return exists;
+		}
+
+		public void CreateSubPath()
+		{
+			string[] subDir = path.Split('\\');
+			string curPath = subDir[0];
+			for (int i = 1; i < subDir.Length; i++)
+			{
+				curPath += "\\" + subDir[i];
+				Directory.CreateDirectory(curPath);
+			}
 		}
 	}
 }

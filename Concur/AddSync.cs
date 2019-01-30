@@ -15,8 +15,8 @@ namespace Concur
 		public FileSyncer fileSyncer;
 		public AddSync(FileSyncer fs)
 		{
-			init();
 			fileSyncer = fs;
+			init();
 		}
 
 		public AddSync()
@@ -25,7 +25,7 @@ namespace Concur
 		}
 
 		public void init()
-		{ 
+		{
 			InitializeComponent();
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 
@@ -39,6 +39,12 @@ namespace Concur
 
 			txtDest.GotFocus += RemoveText;
 			txtDest.LostFocus += AddText;
+
+			if (fileSyncer != null)
+			{
+				txtSrc.Text = fileSyncer.Source().Path;
+				txtDest.Text = fileSyncer.Destination().Path;
+			}
 		}
 
 		private void btnOk_Click(object sender, EventArgs e)
@@ -48,12 +54,17 @@ namespace Concur
 			//C:/Windows
 			//C:/ProgramFiles/
 
+			// Error check if the source folder is empty, and ask if the user is okay with that 
+
 			if (fileSyncer == null)
 			{
-				fileSyncer = new FileSyncer();
+				fileSyncer = new FileSyncer(txtSrc.Text, txtDest.Text);
 			}
-			fileSyncer.Source(txtSrc.Text);
-			fileSyncer.Destination(txtDest.Text);
+			else
+			{
+				fileSyncer.Source(txtSrc.Text);
+				fileSyncer.Destination(txtDest.Text);
+			}
 			DialogResult = DialogResult.OK;
 			this.Close();
 		}

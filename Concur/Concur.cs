@@ -83,7 +83,7 @@ namespace Concur
 
 		private void btnEdit_Click(object sender, EventArgs e)
 		{
-			string id = (string)dgSyncs[0, dgSyncs.CurrentCell.RowIndex].Value;
+			int id = (int)dgSyncs[0, dgSyncs.CurrentCell.RowIndex].Value;
 			AddSync ad = new AddSync(manager.GetSyncer(id));
 
 			manager.SaveFileSyncs();
@@ -92,7 +92,7 @@ namespace Concur
 
 		private void btnDelete_Click(object sender, EventArgs e)
 		{
-			string id = (string)dgSyncs[0, dgSyncs.CurrentCell.RowIndex].Value;
+			int id = (int)dgSyncs[0, dgSyncs.CurrentCell.RowIndex].Value;
 			manager.Delete(id);
 			manager.SaveFileSyncs();
 			RefreshDataGrid();

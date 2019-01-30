@@ -40,7 +40,7 @@ namespace Concur
 				FileSyncer fs;
 				foreach (XElement elm in sm.SyncSaves.Elements())
 				{
-					string id = elm.Element("ID").Value;
+					int id = Convert.ToInt32(elm.Element("ID").Value);
 					string src = elm.Element("Source").Value;
 					string dest = elm.Element("Destination").Value;
 					string lastSync = elm.Element("LastSync").Value;
@@ -144,7 +144,7 @@ namespace Concur
 			return true;
 		}
 
-		public void Delete(string id)
+		public void Delete(int id)
 		{
 			for (int i = 0; i < fileSyncers.Count; i++)
 				if (fileSyncers[i].ID == id)
@@ -158,7 +158,7 @@ namespace Concur
 			return fileSyncers;
 		}
 
-		public FileSyncer GetSyncer(string id)
+		public FileSyncer GetSyncer(int id)
 		{
 			for (int i = 0; i < fileSyncers.Count; i++)
 				if (fileSyncers[i].ID == id)
