@@ -44,8 +44,8 @@ namespace Concur
 					string src = elm.Element("Source").Value;
 					string dest = elm.Element("Destination").Value;
 					string lastSync = elm.Element("LastSync").Value;
-					fs = new FileSyncer(id, src, dest, lastSync);
-					sm.RegisterSync(fs);
+					//fs = new FileSyncer(id, src, dest, lastSync);
+					//sm.RegisterSync(fs);
 				}
 			}
 
@@ -55,16 +55,19 @@ namespace Concur
 		public void SaveFileSyncs()
 		{
 			SyncSaves = new XElement("Manager");
-			
+
 			foreach (FileSyncer fs in fileSyncers)
 			{
-				XElement elm = new XElement("FileSyncs");
-				SyncSaves.Add(elm);
+				XElement xmlfs = new XElement("FileSyncs");
+				SyncSaves.Add(xmlfs);
 
-				elm.Add(new XElement("ID", fs.ID));
-				elm.Add(new XElement("Source", fs.Source().Path));
-				elm.Add(new XElement("Destination", fs.Destination().Path));
-				elm.Add(new XElement("LastSync", fs.LastSync));
+				xmlfs.Add(new XElement("ID", fs.ID));
+
+				XElement xmlFolders = new XElement("Folders");
+				int i = 0;
+				foreach (Folder folder in fs.Folders())
+					xmlFolders.Add(new XElement(i++.ToString(), folder.Path));
+				xmlfs.Add(new XElement("LastSync", fs.LastSync));
 
 			}
 			SyncSaves.Save(dir);
@@ -104,18 +107,6 @@ namespace Concur
 			continueTask = false;
 			syncing = false;
 			waitingForConfirm = false;
-		}
-
-		public void UpdateSync(FileSyncer fs)
-		{
-			foreach (FileSyncer tmp in fileSyncers)
-			{
-				if (tmp.Signature() == fs.Signature())
-				{
-					tmp.Source(fs.Source());
-					tmp.Destination(fs.Destination());
-				}
-			}
 		}
 
 		public void RegisterSync(FileSyncer fs)

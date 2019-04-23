@@ -41,12 +41,12 @@
 			this.btnSync = new System.Windows.Forms.Button();
 			this.timSync = new System.Windows.Forms.Timer(this.components);
 			this.menu = new System.Windows.Forms.MenuStrip();
-			this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.showLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.menuPreferences = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.trayIcon = new System.Windows.Forms.NotifyIcon(this.components);
 			this.timCheckLast = new System.Windows.Forms.Timer(this.components);
-			this.lsLog = new System.Windows.Forms.ListBox();
+			this.panel1 = new System.Windows.Forms.Panel();
 			((System.ComponentModel.ISupportInitialize)(this.dgSyncs)).BeginInit();
 			this.menu.SuspendLayout();
 			this.SuspendLayout();
@@ -62,11 +62,11 @@
             this.Source,
             this.Destination,
             this.LastSync});
-			this.dgSyncs.Location = new System.Drawing.Point(12, 37);
+			this.dgSyncs.Location = new System.Drawing.Point(12, 27);
 			this.dgSyncs.Name = "dgSyncs";
 			this.dgSyncs.ReadOnly = true;
 			this.dgSyncs.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.dgSyncs.Size = new System.Drawing.Size(538, 228);
+			this.dgSyncs.Size = new System.Drawing.Size(542, 238);
 			this.dgSyncs.TabIndex = 0;
 			// 
 			// ID
@@ -99,9 +99,9 @@
 			// 
 			// btnAdd
 			// 
-			this.btnAdd.Location = new System.Drawing.Point(12, 272);
+			this.btnAdd.Location = new System.Drawing.Point(560, 27);
 			this.btnAdd.Name = "btnAdd";
-			this.btnAdd.Size = new System.Drawing.Size(130, 35);
+			this.btnAdd.Size = new System.Drawing.Size(118, 35);
 			this.btnAdd.TabIndex = 1;
 			this.btnAdd.Text = "Add";
 			this.btnAdd.UseVisualStyleBackColor = true;
@@ -109,7 +109,7 @@
 			// 
 			// btnEdit
 			// 
-			this.btnEdit.Location = new System.Drawing.Point(148, 272);
+			this.btnEdit.Location = new System.Drawing.Point(148, 452);
 			this.btnEdit.Name = "btnEdit";
 			this.btnEdit.Size = new System.Drawing.Size(130, 35);
 			this.btnEdit.TabIndex = 2;
@@ -119,7 +119,7 @@
 			// 
 			// btnDelete
 			// 
-			this.btnDelete.Location = new System.Drawing.Point(284, 272);
+			this.btnDelete.Location = new System.Drawing.Point(284, 452);
 			this.btnDelete.Name = "btnDelete";
 			this.btnDelete.Size = new System.Drawing.Size(130, 35);
 			this.btnDelete.TabIndex = 3;
@@ -129,7 +129,7 @@
 			// 
 			// btnSync
 			// 
-			this.btnSync.Location = new System.Drawing.Point(420, 271);
+			this.btnSync.Location = new System.Drawing.Point(420, 451);
 			this.btnSync.Name = "btnSync";
 			this.btnSync.Size = new System.Drawing.Size(130, 35);
 			this.btnSync.TabIndex = 4;
@@ -145,28 +145,28 @@
 			// menu
 			// 
 			this.menu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.optionsToolStripMenuItem,
-            this.showLogToolStripMenuItem,
+            this.newToolStripMenuItem,
+            this.menuPreferences,
             this.aboutToolStripMenuItem});
 			this.menu.Location = new System.Drawing.Point(0, 0);
 			this.menu.Name = "menu";
-			this.menu.Size = new System.Drawing.Size(562, 24);
+			this.menu.Size = new System.Drawing.Size(690, 24);
 			this.menu.TabIndex = 7;
 			this.menu.Text = "menuStrip1";
 			// 
-			// optionsToolStripMenuItem
+			// newToolStripMenuItem
 			// 
-			this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-			this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
-			this.optionsToolStripMenuItem.Text = "Options";
-			this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
+			this.newToolStripMenuItem.Name = "newToolStripMenuItem";
+			this.newToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
+			this.newToolStripMenuItem.Text = "New";
+			this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
 			// 
-			// showLogToolStripMenuItem
+			// menuPreferences
 			// 
-			this.showLogToolStripMenuItem.Name = "showLogToolStripMenuItem";
-			this.showLogToolStripMenuItem.Size = new System.Drawing.Size(71, 20);
-			this.showLogToolStripMenuItem.Text = "Show Log";
-			this.showLogToolStripMenuItem.Click += new System.EventHandler(this.showLogToolStripMenuItem_Click);
+			this.menuPreferences.Name = "menuPreferences";
+			this.menuPreferences.Size = new System.Drawing.Size(80, 20);
+			this.menuPreferences.Text = "Preferences";
+			this.menuPreferences.Click += new System.EventHandler(this.menuPreferences_Click);
 			// 
 			// aboutToolStripMenuItem
 			// 
@@ -186,22 +186,19 @@
 			// 
 			this.timCheckLast.Tick += new System.EventHandler(this.timCheckLast_Tick);
 			// 
-			// lsLog
+			// panel1
 			// 
-			this.lsLog.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.lsLog.FormattingEnabled = true;
-			this.lsLog.Location = new System.Drawing.Point(12, 323);
-			this.lsLog.Name = "lsLog";
-			this.lsLog.Size = new System.Drawing.Size(538, 186);
-			this.lsLog.TabIndex = 8;
+			this.panel1.Location = new System.Drawing.Point(12, 27);
+			this.panel1.Name = "panel1";
+			this.panel1.Size = new System.Drawing.Size(542, 419);
+			this.panel1.TabIndex = 8;
 			// 
 			// ConcurMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(562, 316);
-			this.Controls.Add(this.lsLog);
+			this.ClientSize = new System.Drawing.Size(690, 499);
+			this.Controls.Add(this.panel1);
 			this.Controls.Add(this.btnSync);
 			this.Controls.Add(this.dgSyncs);
 			this.Controls.Add(this.btnDelete);
@@ -232,8 +229,7 @@
 		private System.Windows.Forms.Button btnSync;
 		private System.Windows.Forms.Timer timSync;
 		private System.Windows.Forms.MenuStrip menu;
-		private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem showLogToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem menuPreferences;
 		private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
 		private System.Windows.Forms.NotifyIcon trayIcon;
 		private System.Windows.Forms.Timer timCheckLast;
@@ -241,6 +237,7 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn Source;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Destination;
 		private System.Windows.Forms.DataGridViewTextBoxColumn LastSync;
-		private System.Windows.Forms.ListBox lsLog;
+		private System.Windows.Forms.Panel panel1;
+		private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
 	}
 }

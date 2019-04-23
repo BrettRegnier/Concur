@@ -24,10 +24,15 @@ namespace Concur
 			// Load from file, if no file is found then it returns a blank manager
 			manager = SyncManager.LoadFileSyncs();
 
+			CreateSyncs();
+
 			RefreshDataGrid();
 			CreateTrayMenu();
-			Height = 355; // 560 with log enabled, 355 hidden
-			lsLog.Visible = false;
+		}
+
+		private void CreateSyncs()
+		{
+
 		}
 
 		private void CreateTrayMenu()
@@ -66,19 +71,19 @@ namespace Concur
 
 		private void RefreshDataGrid()
 		{
-			dgSyncs.AllowUserToAddRows = true;
-			dgSyncs.Rows.Clear();
-			foreach (FileSyncer fs in manager.FileSyncers())
-			{
-				DataGridViewRow row = (DataGridViewRow)dgSyncs.Rows[0].Clone();
-				row.Cells[0].Value = fs.ID;
-				row.Cells[1].Value = fs.Source().Path;
-				row.Cells[2].Value = fs.Destination().Path;
-				row.Cells[3].Value = fs.LastSync;
-				dgSyncs.Rows.Add(row);
-			}
+			//dgSyncs.AllowUserToAddRows = true;
+			//dgSyncs.Rows.Clear();
+			//foreach (FileSyncer fs in manager.FileSyncers())
+			//{
+			//	DataGridViewRow row = (DataGridViewRow)dgSyncs.Rows[0].Clone();
+			//	row.Cells[0].Value = fs.ID;
+			//	row.Cells[1].Value = fs.Source().Path;
+			//	row.Cells[2].Value = fs.Destination().Path;
+			//	row.Cells[3].Value = fs.LastSync;
+			//	dgSyncs.Rows.Add(row);
+			//}
 
-			dgSyncs.AllowUserToAddRows = false;
+			//dgSyncs.AllowUserToAddRows = false;
 		}
 
 		private void btnEdit_Click(object sender, EventArgs e)
@@ -115,7 +120,7 @@ namespace Concur
 			timCheckLast.Enabled = true;
 		}
 
-		private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
+		private void menuPreferences_Click(object sender, EventArgs e)
 		{
 			Configuration config = new Configuration();
 			config.ShowDialog();
@@ -169,6 +174,11 @@ namespace Concur
 			}
 
 			timCheckLast.Enabled = false;
+		}
+
+		private void newToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+
 		}
 	}
 }
