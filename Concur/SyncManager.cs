@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
@@ -9,40 +10,37 @@ namespace Concur
 {
 	// This will need parallelization on the sync function
 	// TODO add task queue
+	// TODO refactor code to be cleaner and change global variable names.
 	[Serializable]
 	class SyncManager
 	{
-		[XmlIgnore]
-		private List<FileSyncer> fileSyncers;
-		[XmlIgnore]
-		private static string dir = "./FileSyncs.xml";
-		[XmlIgnore]
-		bool syncing = false;
-		[XmlIgnore]
-		bool continueTask = true;
-		[XmlIgnore]
-		bool waitingForConfirm = false;
+		List<SyncFile> _syncers;
+		static string _dir = "./syncs.xml";
+		bool _syncing = false;
+		bool _continueTask = true;
+		bool _waitingForConfirm = false;
 
-		private XElement SyncSaves;
+		// TODO use this timer instead since this is the manager after all.
+		Timer _timer = new Timer();
+
+		XElement _saves;
 
 		public SyncManager()
 		{
-			fileSyncers = new List<FileSyncer>();
+			_syncers = new List<SyncFile>();
 		}
 
 		public static SyncManager LoadFileSyncs()
 		{
 			SyncManager sm = new SyncManager();
-			if (System.IO.File.Exists(dir))
+			if (System.IO.File.Exists(_dir))
 			{
-				sm.SyncSaves = XElement.Load(dir);
+				sm._saves = XElement.Load(_dir);
 
-				FileSyncer fs;
-				foreach (XElement elm in sm.SyncSaves.Elements())
+				SyncFile fs;
+				foreach (XElement elm in sm._saves.Elements())
 				{
 					int id = Convert.ToInt32(elm.Element("ID").Value);
-					string src = elm.Element("Source").Value;
-					string dest = elm.Element("Destination").Value;
 					string lastSync = elm.Element("LastSync").Value;
 					//fs = new FileSyncer(id, src, dest, lastSync);
 					//sm.RegisterSync(fs);
@@ -54,39 +52,41 @@ namespace Concur
 
 		public void SaveFileSyncs()
 		{
-			SyncSaves = new XElement("Manager");
+			_saves = new XElement("Manager");
 
-			foreach (FileSyncer fs in fileSyncers)
+			foreach (SyncFile fs in _syncers)
 			{
 				XElement xmlfs = new XElement("FileSyncs");
-				SyncSaves.Add(xmlfs);
+				_saves.Add(xmlfs);
 
 				xmlfs.Add(new XElement("ID", fs.ID));
 
 				XElement xmlFolders = new XElement("Folders");
 				int i = 0;
 				foreach (Folder folder in fs.Folders())
-					xmlFolders.Add(new XElement(i++.ToString(), folder.Path));
+					xmlFolders.Add(new XElement("f" + i.ToString(), folder.Path));
+				xmlfs.Add(xmlFolders);
+
 				xmlfs.Add(new XElement("LastSync", fs.LastSync));
 
 			}
-			SyncSaves.Save(dir);
+			_saves.Save(_dir);
 		}
 
 		public void UnloadAllFileSync()
 		{
-			for (int i = fileSyncers.Count - 1; i >= 0; i--)
-				fileSyncers[i] = null;
+			for (int i = _syncers.Count - 1; i >= 0; i--)
+				_syncers[i] = null;
 
-			fileSyncers = new List<FileSyncer>();
+			_syncers = new List<SyncFile>();
 		}
 
 		public void SyncAll()
 		{
-			if (syncing == false)
+			if (_syncing == false)
 			{
-				syncing = true;
-				this.fileSyncers = LoadFileSyncs().fileSyncers;
+				_syncing = true;
+				this._syncers = LoadFileSyncs()._syncers;
 				(new Task(new Action(ParallelSync))).Start();
 
 			}
@@ -94,27 +94,27 @@ namespace Concur
 
 		private void ParallelSync()
 		{
-			foreach (FileSyncer fileSyncer in fileSyncers)
+			foreach (SyncFile fileSyncer in _syncers)
 			{
 				fileSyncer.Sync();
 			}
 
-			waitingForConfirm = true;
-			while (!continueTask)
+			_waitingForConfirm = true;
+			while (!_continueTask)
 			{ }
 			SaveFileSyncs();
 			UnloadAllFileSync();
-			continueTask = false;
-			syncing = false;
-			waitingForConfirm = false;
+			_continueTask = false;
+			_syncing = false;
+			_waitingForConfirm = false;
 		}
 
-		public void RegisterSync(FileSyncer fs)
+		public void RegisterSync(SyncFile fs)
 		{
 			// Check duplicates before adding
 			if (CheckForDuplicate(fs))
 			{
-				fileSyncers.Add(fs);
+				_syncers.Add(fs);
 				SaveFileSyncs();
 			}
 			else
@@ -125,9 +125,9 @@ namespace Concur
 		}
 
 		// True == no duplicate, false == duplicate
-		private bool CheckForDuplicate(FileSyncer fs)
+		private bool CheckForDuplicate(SyncFile fs)
 		{
-			foreach (FileSyncer tmp in fileSyncers)
+			foreach (SyncFile tmp in _syncers)
 			{
 				if (tmp.Signature() == fs.Signature())
 					return false;
@@ -137,35 +137,35 @@ namespace Concur
 
 		public void Delete(int id)
 		{
-			for (int i = 0; i < fileSyncers.Count; i++)
-				if (fileSyncers[i].ID == id)
-					fileSyncers.RemoveAt(i);
+			for (int i = 0; i < _syncers.Count; i++)
+				if (_syncers[i].ID == id)
+					_syncers.RemoveAt(i);
 
 			SaveFileSyncs();
 		}
 
-		public List<FileSyncer> FileSyncers()
+		public List<SyncFile> Syncers()
 		{
-			return fileSyncers;
+			return _syncers;
 		}
 
-		public FileSyncer GetSyncer(int id)
+		public SyncFile GetSyncer(int id)
 		{
-			for (int i = 0; i < fileSyncers.Count; i++)
-				if (fileSyncers[i].ID == id)
-					return fileSyncers[i];
+			for (int i = 0; i < _syncers.Count; i++)
+				if (_syncers[i].ID == id)
+					return _syncers[i];
 
 			return null;
 		}
 
 		public void ContinueTask()
 		{
-			continueTask = true;
+			_continueTask = true;
 		}
 
 		public bool WaitingForConfirm()
 		{
-			return waitingForConfirm;
+			return _waitingForConfirm;
 		}
 	}
 }

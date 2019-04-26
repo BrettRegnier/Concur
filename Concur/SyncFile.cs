@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Concur
 {
-	public class FileSyncer
+	public class SyncFile
 	{
 		static int _count;
 		static int _prevID;
@@ -16,12 +16,12 @@ namespace Concur
 		public int ID { get; private set; }
 		public string LastSync { get; private set; }
 
-		public FileSyncer(int id, string[] folders, int syncTime = 600000, string lastSync = "")
+		public SyncFile(int id, string[] folders, int syncTime = 600000, string lastSync = "")
 		{
 			InitSyncer(id, folders, syncTime, lastSync);
 		}
 
-		public FileSyncer(string[] folders, int syncTime = 600000, string lastSync = "")
+		public SyncFile(string[] folders, int syncTime = 600000, string lastSync = "")
 		{
 			int id = _prevID + 1;
 			InitSyncer(id, folders, syncTime, lastSync);
@@ -40,7 +40,7 @@ namespace Concur
 				LastSync = "Never";
 			else
 				LastSync = lastSync;
-
+			
 			CalculateSignature();
 		}
 

@@ -12,8 +12,8 @@ namespace Concur
 {
 	public partial class AddSync : Form
 	{
-		public FileSyncer fileSyncer;
-		public AddSync(FileSyncer fs)
+		public SyncFile fileSyncer;
+		public AddSync(SyncFile fs)
 		{
 			fileSyncer = fs;
 			Init();
@@ -141,7 +141,7 @@ namespace Concur
 			}
 
 			if (fileSyncer == null)
-				fileSyncer = new FileSyncer(str);
+				fileSyncer = new SyncFile(str);
 			else
 				fileSyncer.Folders(str);
 			DialogResult = DialogResult.OK;

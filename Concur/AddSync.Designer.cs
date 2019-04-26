@@ -33,6 +33,10 @@
 			this.btnOk = new System.Windows.Forms.Button();
 			this.pnlLocations = new System.Windows.Forms.Panel();
 			this.btnAdd = new System.Windows.Forms.Button();
+			this.txtName = new System.Windows.Forms.TextBox();
+			this.lblName = new System.Windows.Forms.Label();
+			this.txtInterval = new System.Windows.Forms.TextBox();
+			this.label1 = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
 			// btnCancel
@@ -59,9 +63,9 @@
 			// 
 			this.pnlLocations.AutoScroll = true;
 			this.pnlLocations.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.pnlLocations.Location = new System.Drawing.Point(12, 12);
+			this.pnlLocations.Location = new System.Drawing.Point(12, 97);
 			this.pnlLocations.Name = "pnlLocations";
-			this.pnlLocations.Size = new System.Drawing.Size(321, 221);
+			this.pnlLocations.Size = new System.Drawing.Size(321, 213);
 			this.pnlLocations.TabIndex = 8;
 			// 
 			// btnAdd
@@ -74,11 +78,49 @@
 			this.btnAdd.UseVisualStyleBackColor = true;
 			this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
 			// 
+			// txtName
+			// 
+			this.txtName.Location = new System.Drawing.Point(79, 20);
+			this.txtName.Name = "txtName";
+			this.txtName.Size = new System.Drawing.Size(254, 20);
+			this.txtName.TabIndex = 10;
+			// 
+			// lblName
+			// 
+			this.lblName.AutoSize = true;
+			this.lblName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblName.Location = new System.Drawing.Point(8, 18);
+			this.lblName.Name = "lblName";
+			this.lblName.Size = new System.Drawing.Size(55, 20);
+			this.lblName.TabIndex = 11;
+			this.lblName.Text = "Name:";
+			// 
+			// txtInterval
+			// 
+			this.txtInterval.Location = new System.Drawing.Point(79, 63);
+			this.txtInterval.Name = "txtInterval";
+			this.txtInterval.Size = new System.Drawing.Size(254, 20);
+			this.txtInterval.TabIndex = 12;
+			// 
+			// label1
+			// 
+			this.label1.AutoSize = true;
+			this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label1.Location = new System.Drawing.Point(8, 61);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(65, 20);
+			this.label1.TabIndex = 13;
+			this.label1.Text = "Interval:";
+			// 
 			// AddSync
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(430, 246);
+			this.ClientSize = new System.Drawing.Size(430, 322);
+			this.Controls.Add(this.label1);
+			this.Controls.Add(this.txtInterval);
+			this.Controls.Add(this.lblName);
+			this.Controls.Add(this.txtName);
 			this.Controls.Add(this.btnAdd);
 			this.Controls.Add(this.pnlLocations);
 			this.Controls.Add(this.btnOk);
@@ -88,6 +130,7 @@
 			this.Name = "AddSync";
 			this.Text = "Add Folder Sync";
 			this.ResumeLayout(false);
+			this.PerformLayout();
 
 		}
 
@@ -96,5 +139,9 @@
 		private System.Windows.Forms.Button btnOk;
 		private System.Windows.Forms.Panel pnlLocations;
 		private System.Windows.Forms.Button btnAdd;
+		private System.Windows.Forms.TextBox txtName;
+		private System.Windows.Forms.Label lblName;
+		private System.Windows.Forms.TextBox txtInterval;
+		private System.Windows.Forms.Label label1;
 	}
 }

@@ -9,6 +9,10 @@
 -Error checking
 -Installer
 
+Maybe:
+-Add a textbox extender
+
 Feature:
 -Split syncing into 2 way sync, and master - slaves sync 
 -Create log
+-Progress bars

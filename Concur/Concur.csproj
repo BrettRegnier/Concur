@@ -68,11 +68,14 @@
       <DependentUpon>Configuration.cs</DependentUpon>
     </Compile>
     <Compile Include="File.cs" />
-    <Compile Include="FileSyncer.cs" />
+    <Compile Include="LabelledTextbox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SyncFile.cs" />
     <Compile Include="Folder.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SyncEntry.cs" />
+    <Compile Include="SyncDetail.cs" />
     <Compile Include="SyncManager.cs" />
     <EmbeddedResource Include="AddSync.resx">
       <DependentUpon>AddSync.cs</DependentUpon>
@@ -82,6 +85,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Configuration.resx">
       <DependentUpon>Configuration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LabelledTextbox.resx">
+      <DependentUpon>LabelledTextbox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

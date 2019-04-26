@@ -24,15 +24,173 @@ namespace Concur
 			// Load from file, if no file is found then it returns a blank manager
 			manager = SyncManager.LoadFileSyncs();
 
-			CreateSyncs();
+			foreach (SyncFile sf in manager.Syncers())
+				DisplaySync(sf);
 
-			RefreshDataGrid();
 			CreateTrayMenu();
 		}
 
-		private void CreateSyncs()
+		private void AddSyncPanel(Panel pnl)
 		{
+			int idx = pnlSyncs.Controls.Count;
+			pnl.Top = idx == 0 ? 52 : pnlSyncs.Controls[idx].Top + 52;
+			pnlSyncs.Controls.Add(pnl);
+		}
 
+		private void DisplaySync(SyncFile sf)
+		{
+			Panel panel = new Panel();
+			Label name = new Label();
+			Label lastSync = new Label();
+			Button edit = new Button();
+			Button remove = new Button();
+			Panel folders = new Panel();
+
+			name.Text = "TODO";
+			name.Left = 3;
+			name.Top = 7;
+
+			lastSync.Text = sf.LastSync;
+			lastSync.Left = 131;
+			lastSync.Top = 7;
+
+			edit.Text = "v";
+			edit.Width = 29;
+			edit.Height = 23;
+			edit.Left = 473;
+			edit.Top = 7;
+			edit.Font = new Font("Miriam CLM", edit.Font.Size);
+			edit.Click += (sender, e) =>
+			{
+				folders = CreateFoldersPanel(sf);
+				panel.Controls.Add(folders);
+				panel.Height += 400;
+			};
+
+			remove.Text = "x";
+			remove.ForeColor = System.Drawing.Color.Red;
+			remove.Width = 29;
+			remove.Height = 23;
+			remove.Left = 508;
+			remove.Top = 7;
+			remove.Font = new Font("Miriam CLM", remove.Font.Size);
+			remove.Click += (sender, e) =>
+			{
+				DialogResult confirm = MessageBox.Show("Are you sure you want to delete this entry?", "Confirm Deletion", MessageBoxButtons.YesNo);
+				if (confirm == DialogResult.Yes)
+				{
+					bool find = false;
+					for (int i = 0; i < pnlSyncs.Controls.Count; i++)
+					{
+						if (find)
+							pnlSyncs.Controls[i].Top -= 52;
+						if (panel == pnlSyncs.Controls[i])
+							find = true;
+					}
+					pnlSyncs.Controls.Remove(panel);
+					manager.Delete(sf.ID);
+				}
+			};
+
+			panel.BorderStyle = BorderStyle.FixedSingle;
+			panel.Left = -1;
+			panel.Width = 542;
+			panel.Height = 38;
+
+			panel.Controls.Add(name);
+			panel.Controls.Add(lastSync);
+			panel.Controls.Add(edit);
+			panel.Controls.Add(remove);
+
+			int idx = pnlSyncs.Controls.Count - 1;
+			panel.Top = idx == 0 ? pnlSyncs.Controls[idx].Top + 37 : -1;
+			pnlSyncs.Controls.Add(panel);
+		}
+
+		private Panel CreateFoldersPanel(SyncFile sf, string location = "Example: C:\\MyFolder")
+		{
+			Panel container = new Panel();
+
+			foreach (Folder folder in sf.Folders())
+			{
+				Panel panel = new Panel();
+				Label lbl = new Label();
+				TextBox txt = new TextBox();
+				Button browse = new Button();
+				Button delete = new Button();
+
+				lbl.Text = "Location " + (container.Controls.Count + 1).ToString();
+				lbl.Width = 100;
+				lbl.Height = 13;
+
+				txt.Text = location;
+				txt.ForeColor = Color.DarkGray;
+				txt.GotFocus += RemoveText;
+				txt.LostFocus += AddText;
+				txt.Width = 197;
+
+				browse.Text = "...";
+				browse.Width = 36;
+				browse.Click += (sender, e) =>
+				{
+					using (var fbd = new FolderBrowserDialog())
+					{
+						DialogResult r = fbd.ShowDialog();
+						if (r == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+						{
+							txt.Text = fbd.SelectedPath;
+							txt.ForeColor = Color.Black;
+						}
+					}
+				};
+
+				delete.Text = "x";
+				delete.ForeColor = Color.Red;
+				delete.Width = 36;
+				delete.Click += (sender, e) =>
+				{
+					bool find = false;
+					for (int i = 0; i < container.Controls.Count; i++)
+					{
+						if (find)
+							container.Controls[i].Top -= 52;
+						if (panel == container.Controls[i])
+							find = true;
+					}
+					container.Controls.Remove(panel);
+				};
+
+
+				lbl.Left = 1;
+				lbl.Top = 2;
+
+				txt.Left = 10;
+				txt.Top = 20;
+
+				browse.Left = 213;
+				browse.Top = 20;
+
+				delete.Left = 255;
+				delete.Top = 20;
+
+				panel.Controls.Add(lbl);
+				panel.Controls.Add(txt);
+				panel.Controls.Add(browse);
+				panel.Controls.Add(delete);
+
+				panel.Width = 300;
+				panel.Height = 46;
+
+				panel.Left = 0;
+				panel.Top = container.Controls.Count * 52;
+
+				container.Left = 7;
+				container.Top = 63;
+				container.Width = 321;
+				container.Height = 213;
+				container.Controls.Add(panel);
+			}
+			return container;
 		}
 
 		private void CreateTrayMenu()
@@ -64,43 +222,10 @@ namespace Concur
 			var result = addForm.ShowDialog();
 			if (result == DialogResult.OK)
 			{
-				manager.RegisterSync(addForm.fileSyncer);
+				SyncFile sf = addForm.fileSyncer;
+				manager.RegisterSync(sf);
+				DisplaySync(sf);
 			}
-			RefreshDataGrid();
-		}
-
-		private void RefreshDataGrid()
-		{
-			//dgSyncs.AllowUserToAddRows = true;
-			//dgSyncs.Rows.Clear();
-			//foreach (FileSyncer fs in manager.FileSyncers())
-			//{
-			//	DataGridViewRow row = (DataGridViewRow)dgSyncs.Rows[0].Clone();
-			//	row.Cells[0].Value = fs.ID;
-			//	row.Cells[1].Value = fs.Source().Path;
-			//	row.Cells[2].Value = fs.Destination().Path;
-			//	row.Cells[3].Value = fs.LastSync;
-			//	dgSyncs.Rows.Add(row);
-			//}
-
-			//dgSyncs.AllowUserToAddRows = false;
-		}
-
-		private void btnEdit_Click(object sender, EventArgs e)
-		{
-			int id = (int)dgSyncs[0, dgSyncs.CurrentCell.RowIndex].Value;
-			AddSync ad = new AddSync(manager.GetSyncer(id));
-
-			manager.SaveFileSyncs();
-			RefreshDataGrid();
-		}
-
-		private void btnDelete_Click(object sender, EventArgs e)
-		{
-			int id = (int)dgSyncs[0, dgSyncs.CurrentCell.RowIndex].Value;
-			manager.Delete(id);
-			manager.SaveFileSyncs();
-			RefreshDataGrid();
 		}
 
 		private void btnSync_Click(object sender, EventArgs e)
@@ -169,7 +294,6 @@ namespace Concur
 		{
 			if (manager.WaitingForConfirm())
 			{
-				RefreshDataGrid();
 				manager.ContinueTask();
 			}
 
@@ -179,6 +303,33 @@ namespace Concur
 		private void newToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 
+		}
+
+		private void btnDelete_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void btnEdit_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		public void RemoveText(object sender, EventArgs e)
+		{
+			if (((TextBox)sender).Text == "Example: C:\\MyFolder")
+				((TextBox)sender).Text = "";
+
+			((TextBox)sender).ForeColor = Color.Black;
+		}
+
+		public void AddText(object sender, EventArgs e)
+		{
+			if (string.IsNullOrWhiteSpace(((TextBox)sender).Text))
+			{
+				((TextBox)sender).Text = "Example: C:\\MyFolder";
+				((TextBox)sender).ForeColor = Color.DarkGray;
+			}
 		}
 	}
 }
