@@ -44,7 +44,7 @@ namespace Concur
 			Label lastSync = new Label();
 			Button edit = new Button();
 			Button remove = new Button();
-			Panel folders = new Panel();
+			Panel additional = new Panel();
 
 			name.Text = "TODO";
 			name.Left = 3;
@@ -60,11 +60,28 @@ namespace Concur
 			edit.Left = 473;
 			edit.Top = 7;
 			edit.Font = new Font("Miriam CLM", edit.Font.Size);
+			bool isOpen = false;
 			edit.Click += (sender, e) =>
 			{
-				folders = CreateFoldersPanel(sf);
-				panel.Controls.Add(folders);
-				panel.Height += 400;
+				if (!isOpen)
+				{
+					additional = new Panel();
+					// Maybe make one big panel for this all so I can just remove the panel.
+					Label panelLabel = new Label();
+					panelLabel.Text = "Folders";
+					panelLabel.Left = 7;
+					panelLabel.Top = 2;
+					additional.Controls.Add(panelLabel);
+					panel.Controls.Add(CreateFoldersPanel(sf));
+					panel.Height = 209;
+					isOpen = true;
+				}
+				else
+				{
+					panel.Controls.Remove(additional);
+					panel.Height = 38;
+					isOpen = false;
+				}
 			};
 
 			remove.Text = "x";
@@ -110,6 +127,12 @@ namespace Concur
 		private Panel CreateFoldersPanel(SyncFile sf, string location = "Example: C:\\MyFolder")
 		{
 			Panel container = new Panel();
+			container.Left = 7;
+			container.Top = 44;
+			container.Width = 321;
+			container.Height = 141;
+			container.BorderStyle = BorderStyle.FixedSingle;
+			container.AutoScroll = true;
 
 			foreach (Folder folder in sf.Folders())
 			{
@@ -119,12 +142,11 @@ namespace Concur
 				Button browse = new Button();
 				Button delete = new Button();
 
-				lbl.Text = "Location " + (container.Controls.Count + 1).ToString();
+				lbl.Text = folder.Name;
 				lbl.Width = 100;
 				lbl.Height = 13;
 
-				txt.Text = location;
-				txt.ForeColor = Color.DarkGray;
+				txt.Text = folder.Path;
 				txt.GotFocus += RemoveText;
 				txt.LostFocus += AddText;
 				txt.Width = 197;
@@ -184,10 +206,6 @@ namespace Concur
 				panel.Left = 0;
 				panel.Top = container.Controls.Count * 52;
 
-				container.Left = 7;
-				container.Top = 63;
-				container.Width = 321;
-				container.Height = 213;
 				container.Controls.Add(panel);
 			}
 			return container;
