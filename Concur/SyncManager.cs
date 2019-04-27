@@ -23,27 +23,36 @@ namespace Concur
 		// TODO use this timer instead since this is the manager after all.
 		Timer _timer = new Timer();
 
-		XElement _saves;
-
 		public SyncManager()
 		{
 			_syncers = new List<SyncFile>();
 		}
 
+		// TODO add sync time into the load and save functions
 		public static SyncManager LoadFileSyncs()
 		{
+			// TODO error checking for a messed up xml file
+			// TODO if ignore and move on.
 			SyncManager sm = new SyncManager();
 			if (System.IO.File.Exists(_dir))
 			{
-				sm._saves = XElement.Load(_dir);
+				XElement saves = XElement.Load(_dir);
 
-				SyncFile fs;
-				foreach (XElement elm in sm._saves.Elements())
+				SyncFile sf;
+				foreach (XElement elm in saves.Elements())
 				{
 					int id = Convert.ToInt32(elm.Element("ID").Value);
+					string name = elm.Element("Name").Value;
 					string lastSync = elm.Element("LastSync").Value;
-					//fs = new FileSyncer(id, src, dest, lastSync);
-					//sm.RegisterSync(fs);
+
+					List<string> folders = new List<string>();
+					foreach (XElement folder in elm.Element("Folders").Elements())
+					{
+						folders.Add(folder.Value);
+					}
+
+					sf = new SyncFile(id, name, folders.ToArray(), lastSync);
+					sm.RegisterSync(sf);
 				}
 			}
 
@@ -52,25 +61,24 @@ namespace Concur
 
 		public void SaveFileSyncs()
 		{
-			_saves = new XElement("Manager");
+			XElement saves = new XElement("Manager");
 
 			foreach (SyncFile fs in _syncers)
 			{
 				XElement xmlfs = new XElement("FileSyncs");
-				_saves.Add(xmlfs);
+				saves.Add(xmlfs);
 
 				xmlfs.Add(new XElement("ID", fs.ID));
+				xmlfs.Add(new XElement("Name", fs.Name));
+				xmlfs.Add(new XElement("LastSync", fs.LastSync));
 
 				XElement xmlFolders = new XElement("Folders");
 				int i = 0;
 				foreach (Folder folder in fs.Folders())
 					xmlFolders.Add(new XElement("f" + i.ToString(), folder.Path));
 				xmlfs.Add(xmlFolders);
-
-				xmlfs.Add(new XElement("LastSync", fs.LastSync));
-
 			}
-			_saves.Save(_dir);
+			saves.Save(_dir);
 		}
 
 		public void UnloadAllFileSync()

@@ -12,26 +12,30 @@ namespace Concur
 
 		private int _signature;
 		private int _syncTime;
+		private string _name;
 
 		public int ID { get; private set; }
 		public string LastSync { get; private set; }
+		public string Name { get { return _name; } set { _name = value; } }
 
-		public SyncFile(int id, string[] folders, int syncTime = 600000, string lastSync = "")
+		public SyncFile(int id, string name, string[] folders, string lastSync = "", int syncTime = 600000)
 		{
-			InitSyncer(id, folders, syncTime, lastSync);
+			InitSyncer(id, name, folders, lastSync, syncTime);
 		}
 
-		public SyncFile(string[] folders, int syncTime = 600000, string lastSync = "")
+		public SyncFile(string name, string[] folders, string lastSync = "", int syncTime = 600000)
 		{
 			int id = _prevID + 1;
-			InitSyncer(id, folders, syncTime, lastSync);
+			InitSyncer(id, name, folders, lastSync, syncTime);
 		}
 
-		private void InitSyncer(int id, string[] folders, int syncTime = 600000, string lastSync = "")
+		private void InitSyncer(int id, string name, string[] folders, string lastSync = "", int syncTime = 600000)
 		{
 			_count = System.Convert.ToInt32(id);
 			ID = id;
 			_prevID = id;
+
+			Name = name;
 
 			for (int i = 0; i < folders.Length; i++)
 				_folders.Add(new Folder(folders[i]));
@@ -40,7 +44,7 @@ namespace Concur
 				LastSync = "Never";
 			else
 				LastSync = lastSync;
-			
+
 			CalculateSignature();
 		}
 
@@ -69,9 +73,10 @@ namespace Concur
 				for (int i = 0; i < folders.Count; i++)
 				{
 					if (!folders[i].CheckPathExists()) folders[i].CreateSubPath();
+					files.Add(new List<FileInfo>());
 					foreach (FileInfo sf in folders[i].Files())
 					{
-						bool isNewest = false;
+						bool isNewest = true;
 						for (int j = 0; j < folders.Count; j++)
 						{
 							if (i == j) continue;
@@ -106,7 +111,7 @@ namespace Concur
 				for (int i = 0; i < folders.Count; i++)
 				{
 					List<Folder> newFolders = new List<Folder>();
-					foreach(Folder fold in folders[i].Folders())
+					foreach (Folder fold in folders[i].Folders())
 					{
 						for (int j = 0; j < folders.Count; j++)
 						{
@@ -120,7 +125,7 @@ namespace Concur
 				}
 
 				return success;
-				
+
 			}
 			catch (System.Exception ex)
 			{
@@ -131,7 +136,7 @@ namespace Concur
 
 		public bool Sync()
 		{
-			bool result = Sync();
+			bool result = Sync(_folders);
 			if (result) LastSync = System.DateTime.UtcNow.ToString();
 			return result;
 		}

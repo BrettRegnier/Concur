@@ -140,8 +140,9 @@ namespace Concur
 				}
 			}
 
+			// TODO fix up the missing pieces of this thing
 			if (fileSyncer == null)
-				fileSyncer = new SyncFile(str);
+				fileSyncer = new SyncFile("TODO", str);
 			else
 				fileSyncer.Folders(str);
 			DialogResult = DialogResult.OK;

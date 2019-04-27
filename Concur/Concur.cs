@@ -37,6 +37,7 @@ namespace Concur
 			pnlSyncs.Controls.Add(pnl);
 		}
 
+		// Display the folder sync into the main panel
 		private void DisplaySync(SyncFile sf)
 		{
 			Panel panel = new Panel();
@@ -44,6 +45,8 @@ namespace Concur
 			Label lastSync = new Label();
 			Button edit = new Button();
 			Button remove = new Button();
+
+			// This is the panel for additional information
 			Panel additional = new Panel();
 
 			name.Text = "TODO";
@@ -54,7 +57,7 @@ namespace Concur
 			lastSync.Left = 131;
 			lastSync.Top = 7;
 
-			edit.Text = "v";
+			edit.Image = Properties.Resources.edit;
 			edit.Width = 29;
 			edit.Height = 23;
 			edit.Left = 473;
@@ -63,28 +66,55 @@ namespace Concur
 			bool isOpen = false;
 			edit.Click += (sender, e) =>
 			{
+				int addHeight = 171;
 				if (!isOpen)
 				{
 					additional = new Panel();
-					// Maybe make one big panel for this all so I can just remove the panel.
 					Label panelLabel = new Label();
 					panelLabel.Text = "Folders";
 					panelLabel.Left = 7;
 					panelLabel.Top = 2;
 					additional.Controls.Add(panelLabel);
-					panel.Controls.Add(CreateFoldersPanel(sf));
-					panel.Height = 209;
+					additional.Controls.Add(CreateFoldersPanel(sf));
+					panel.Controls.Add(additional);
+
+					panel.Height += addHeight;
+
+					// move the other panels below down by a certain amount
+					bool fnd = false;
+					foreach (Control cntrl in pnlSyncs.Controls)
+					{
+						if (fnd)
+							cntrl.Top += addHeight;
+
+						if ((Panel)cntrl == panel)
+							fnd = true;
+					}
+
 					isOpen = true;
 				}
 				else
 				{
 					panel.Controls.Remove(additional);
-					panel.Height = 38;
+					panel.Height -= addHeight;
+
+					// move the other panels below up by a certain amount
+					bool fnd = false;
+					foreach (Control cntrl in pnlSyncs.Controls)
+					{
+						if (fnd)
+							cntrl.Top -= addHeight;
+
+						if ((Panel)cntrl == panel)
+							fnd = true;
+					}
+
 					isOpen = false;
 				}
 			};
 
-			remove.Text = "x";
+			// Button for removing a whole entry from both the manager and this UI
+			remove.Image = Properties.Resources.delete;
 			remove.ForeColor = System.Drawing.Color.Red;
 			remove.Width = 29;
 			remove.Height = 23;
@@ -100,7 +130,7 @@ namespace Concur
 					for (int i = 0; i < pnlSyncs.Controls.Count; i++)
 					{
 						if (find)
-							pnlSyncs.Controls[i].Top -= 52;
+							pnlSyncs.Controls[i].Top -= 37;
 						if (panel == pnlSyncs.Controls[i])
 							find = true;
 					}
@@ -119,11 +149,16 @@ namespace Concur
 			panel.Controls.Add(edit);
 			panel.Controls.Add(remove);
 
-			int idx = pnlSyncs.Controls.Count - 1;
-			panel.Top = idx == 0 ? pnlSyncs.Controls[idx].Top + 37 : -1;
-			pnlSyncs.Controls.Add(panel);
+			int cnt = pnlSyncs.Controls.Count;
+			panel.Top = cnt > 0 ? pnlSyncs.Controls[cnt - 1].Top + 37 : -1;
+			//pnlSyncs.Controls.Add(panel);
+
+			SyncControl sc = new SyncControl(sf);
+			sc.Top = cnt > 0 ? pnlSyncs.Controls[cnt - 1].Top + 37 : -1;
+			pnlSyncs.Controls.Add(sc);
 		}
 
+		// Adds the folders into a panel, which is added to the containing panel
 		private Panel CreateFoldersPanel(SyncFile sf, string location = "Example: C:\\MyFolder")
 		{
 			Panel container = new Panel();
@@ -147,8 +182,8 @@ namespace Concur
 				lbl.Height = 13;
 
 				txt.Text = folder.Path;
-				txt.GotFocus += RemoveText;
-				txt.LostFocus += AddText;
+				txt.GotFocus += HidePlaceholderText;
+				txt.LostFocus += ShowPlaceholderText;
 				txt.Width = 197;
 
 				browse.Text = "...";
@@ -166,20 +201,30 @@ namespace Concur
 					}
 				};
 
-				delete.Text = "x";
+				delete.Image = Properties.Resources.delete;
 				delete.ForeColor = Color.Red;
 				delete.Width = 36;
 				delete.Click += (sender, e) =>
 				{
 					bool find = false;
-					for (int i = 0; i < container.Controls.Count; i++)
+					if (container.Controls.Count > 2)
 					{
-						if (find)
-							container.Controls[i].Top -= 52;
-						if (panel == container.Controls[i])
-							find = true;
+
+						for (int i = 0; i < container.Controls.Count; i++)
+						{
+
+							if (find)
+								container.Controls[i].Top -= 52;
+							if (panel == container.Controls[i])
+								find = true;
+						}
+						container.Controls.Remove(panel);
 					}
-					container.Controls.Remove(panel);
+					else
+					{
+						txt.Text = "";
+						ShowPlaceholderText(txt, null);
+					}
 				};
 
 
@@ -232,35 +277,6 @@ namespace Concur
 			};
 
 			trayIcon.ContextMenuStrip = trayMenu;
-		}
-
-		private void btnAdd_Click(object sender, EventArgs e)
-		{
-			AddSync addForm = new AddSync();
-			var result = addForm.ShowDialog();
-			if (result == DialogResult.OK)
-			{
-				SyncFile sf = addForm.fileSyncer;
-				manager.RegisterSync(sf);
-				DisplaySync(sf);
-			}
-		}
-
-		private void btnSync_Click(object sender, EventArgs e)
-		{
-			Sync();
-		}
-
-		private void timSync_Tick(object sender, EventArgs e)
-		{
-			// sync the folders. This should have a configuration for the interval
-			Sync();
-		}
-
-		private void Sync()
-		{
-			manager.SyncAll();
-			timCheckLast.Enabled = true;
 		}
 
 		private void menuPreferences_Click(object sender, EventArgs e)
@@ -318,22 +334,7 @@ namespace Concur
 			timCheckLast.Enabled = false;
 		}
 
-		private void newToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void btnDelete_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void btnEdit_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		public void RemoveText(object sender, EventArgs e)
+		public void HidePlaceholderText(object sender, EventArgs e)
 		{
 			if (((TextBox)sender).Text == "Example: C:\\MyFolder")
 				((TextBox)sender).Text = "";
@@ -341,13 +342,48 @@ namespace Concur
 			((TextBox)sender).ForeColor = Color.Black;
 		}
 
-		public void AddText(object sender, EventArgs e)
+		public void ShowPlaceholderText(object sender, EventArgs e)
 		{
 			if (string.IsNullOrWhiteSpace(((TextBox)sender).Text))
 			{
 				((TextBox)sender).Text = "Example: C:\\MyFolder";
 				((TextBox)sender).ForeColor = Color.DarkGray;
 			}
+		}
+
+		private void menuNew_Click(object sender, EventArgs e)
+		{
+			AddSync addForm = new AddSync();
+			var result = addForm.ShowDialog();
+			if (result == DialogResult.OK)
+			{
+				SyncFile sf = addForm.fileSyncer;
+				manager.RegisterSync(sf);
+				DisplaySync(sf);
+			}
+		}
+
+		private void menuForceSync_Click(object sender, EventArgs e)
+		{
+			Sync();
+		}
+
+		private void timSync_Tick(object sender, EventArgs e)
+		{
+			// sync the folders. This should have a configuration for the interval
+			Sync();
+		}
+
+		private void Sync()
+		{
+			manager.SyncAll();
+			RefreshLabels();
+			timCheckLast.Enabled = true;
+		}
+
+		private void RefreshLabels()
+		{
+
 		}
 	}
 }
