@@ -33,7 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>icons\concuricon.ico</ApplicationIcon>
+    <ApplicationIcon>Icons\concuricon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -49,53 +49,53 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddSync.cs">
+    <Compile Include="src\Views\AddView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AddSync.Designer.cs">
-      <DependentUpon>AddSync.cs</DependentUpon>
+    <Compile Include="src\Views\AddView.Designer.cs">
+      <DependentUpon>AddView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Concur.cs">
+    <Compile Include="src\Views\MainView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Concur.Designer.cs">
-      <DependentUpon>Concur.cs</DependentUpon>
+    <Compile Include="src\Views\MainView.Designer.cs">
+      <DependentUpon>MainView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Configuration.cs">
+    <Compile Include="src\Views\ConfigView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Configuration.Designer.cs">
-      <DependentUpon>Configuration.cs</DependentUpon>
+    <Compile Include="src\Views\ConfigView.Designer.cs">
+      <DependentUpon>ConfigView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\SyncControl.cs">
+    <Compile Include="src\Views\SyncView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="File.cs" />
-    <Compile Include="Controls\LabelledTextbox.cs">
+    <Compile Include="src\Models\File.cs" />
+    <Compile Include="src\Views\LabelledTextbox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="SyncFile.cs" />
-    <Compile Include="Folder.cs" />
+    <Compile Include="src\Models\FileSync.cs" />
+    <Compile Include="src\Models\Folder.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SyncDetail.cs" />
-    <Compile Include="SyncManager.cs" />
+    <Compile Include="src\Controllers\SyncController.cs" />
     <Compile Include="Test.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Test.Designer.cs">
       <DependentUpon>Test.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="AddSync.resx">
-      <DependentUpon>AddSync.cs</DependentUpon>
+    <EmbeddedResource Include="src\Views\AddView.resx">
+      <DependentUpon>AddView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Concur.resx">
-      <DependentUpon>Concur.cs</DependentUpon>
+    <EmbeddedResource Include="src\Views\MainView.resx">
+      <DependentUpon>MainView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Configuration.resx">
-      <DependentUpon>Configuration.cs</DependentUpon>
+    <EmbeddedResource Include="src\Views\ConfigView.resx">
+      <DependentUpon>ConfigView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\LabelledTextbox.resx">
+    <EmbeddedResource Include="src\Views\LabelledTextbox.resx">
       <DependentUpon>LabelledTextbox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -128,9 +128,9 @@
     <None Include="TODO" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="icons\concuricon.ico" />
-    <Content Include="icons\delete.png" />
-    <Content Include="icons\edit.png" />
+    <Content Include="Icons\concuricon.ico" />
+    <Content Include="Icons\delete.png" />
+    <Content Include="Icons\edit.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

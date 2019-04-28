@@ -12,9 +12,9 @@ namespace Concur
 	// TODO add task queue
 	// TODO refactor code to be cleaner and change global variable names.
 	[Serializable]
-	class SyncManager
+	class SyncController
 	{
-		List<SyncFile> _syncers;
+		List<FileSync> _syncers;
 		static string _dir = "./syncs.xml";
 		bool _syncing = false;
 		bool _continueTask = true;
@@ -23,22 +23,22 @@ namespace Concur
 		// TODO use this timer instead since this is the manager after all.
 		Timer _timer = new Timer();
 
-		public SyncManager()
+		public SyncController()
 		{
-			_syncers = new List<SyncFile>();
+			_syncers = new List<FileSync>();
 		}
 
 		// TODO add sync time into the load and save functions
-		public static SyncManager LoadFileSyncs()
+		public static SyncController LoadFileSyncs()
 		{
 			// TODO error checking for a messed up xml file
 			// TODO if ignore and move on.
-			SyncManager sm = new SyncManager();
+			SyncController sm = new SyncController();
 			if (System.IO.File.Exists(_dir))
 			{
 				XElement saves = XElement.Load(_dir);
 
-				SyncFile sf;
+				FileSync sf;
 				foreach (XElement elm in saves.Elements())
 				{
 					int id = Convert.ToInt32(elm.Element("ID").Value);
@@ -51,7 +51,7 @@ namespace Concur
 						folders.Add(folder.Value);
 					}
 
-					sf = new SyncFile(id, name, folders.ToArray(), lastSync);
+					sf = new FileSync(id, name, folders.ToArray(), lastSync);
 					sm.RegisterSync(sf);
 				}
 			}
@@ -63,7 +63,7 @@ namespace Concur
 		{
 			XElement saves = new XElement("Manager");
 
-			foreach (SyncFile fs in _syncers)
+			foreach (FileSync fs in _syncers)
 			{
 				XElement xmlfs = new XElement("FileSyncs");
 				saves.Add(xmlfs);
@@ -86,7 +86,7 @@ namespace Concur
 			for (int i = _syncers.Count - 1; i >= 0; i--)
 				_syncers[i] = null;
 
-			_syncers = new List<SyncFile>();
+			_syncers = new List<FileSync>();
 		}
 
 		public void SyncAll()
@@ -102,7 +102,7 @@ namespace Concur
 
 		private void ParallelSync()
 		{
-			foreach (SyncFile fileSyncer in _syncers)
+			foreach (FileSync fileSyncer in _syncers)
 			{
 				fileSyncer.Sync();
 			}
@@ -117,7 +117,7 @@ namespace Concur
 			_waitingForConfirm = false;
 		}
 
-		public void RegisterSync(SyncFile fs)
+		public void RegisterSync(FileSync fs)
 		{
 			// Check duplicates before adding
 			if (CheckForDuplicate(fs))
@@ -133,9 +133,9 @@ namespace Concur
 		}
 
 		// True == no duplicate, false == duplicate
-		private bool CheckForDuplicate(SyncFile fs)
+		private bool CheckForDuplicate(FileSync fs)
 		{
-			foreach (SyncFile tmp in _syncers)
+			foreach (FileSync tmp in _syncers)
 			{
 				if (tmp.Signature() == fs.Signature())
 					return false;
@@ -152,12 +152,12 @@ namespace Concur
 			SaveFileSyncs();
 		}
 
-		public List<SyncFile> Syncers()
+		public List<FileSync> Syncers()
 		{
 			return _syncers;
 		}
 
-		public SyncFile GetSyncer(int id)
+		public FileSync GetSyncer(int id)
 		{
 			for (int i = 0; i < _syncers.Count; i++)
 				if (_syncers[i].ID == id)

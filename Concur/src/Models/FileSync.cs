@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Concur
 {
-	public class SyncFile
+	public class FileSync
 	{
 		static int _count;
 		static int _prevID;
@@ -18,12 +18,12 @@ namespace Concur
 		public string LastSync { get; private set; }
 		public string Name { get { return _name; } set { _name = value; } }
 
-		public SyncFile(int id, string name, string[] folders, string lastSync = "", int syncTime = 600000)
+		public FileSync(int id, string name, string[] folders, string lastSync = "", int syncTime = 600000)
 		{
 			InitSyncer(id, name, folders, lastSync, syncTime);
 		}
 
-		public SyncFile(string name, string[] folders, string lastSync = "", int syncTime = 600000)
+		public FileSync(string name, string[] folders, string lastSync = "", int syncTime = 600000)
 		{
 			int id = _prevID + 1;
 			InitSyncer(id, name, folders, lastSync, syncTime);

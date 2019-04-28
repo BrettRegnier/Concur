@@ -10,16 +10,16 @@ using System.Windows.Forms;
 
 namespace Concur
 {
-	public partial class AddSync : Form
+	public partial class AddView : Form
 	{
-		public SyncFile fileSyncer;
-		public AddSync(SyncFile fs)
+		public FileSync fileSyncer;
+		public AddView(FileSync fs)
 		{
 			fileSyncer = fs;
 			Init();
 		}
 
-		public AddSync()
+		public AddView()
 		{
 			Init();
 		}
@@ -142,7 +142,7 @@ namespace Concur
 
 			// TODO fix up the missing pieces of this thing
 			if (fileSyncer == null)
-				fileSyncer = new SyncFile("TODO", str);
+				fileSyncer = new FileSync("TODO", str);
 			else
 				fileSyncer.Folders(str);
 			DialogResult = DialogResult.OK;

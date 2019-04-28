@@ -12,7 +12,7 @@ namespace Concur
 {
 	public partial class ConcurMain : Form
 	{
-		static SyncManager manager;
+		static SyncController manager;
 
 		public ConcurMain()
 		{
@@ -22,9 +22,9 @@ namespace Concur
 		private void ConcurMain_Load(object sender, EventArgs e)
 		{
 			// Load from file, if no file is found then it returns a blank manager
-			manager = SyncManager.LoadFileSyncs();
+			manager = SyncController.LoadFileSyncs();
 
-			foreach (SyncFile sf in manager.Syncers())
+			foreach (FileSync sf in manager.Syncers())
 				DisplaySync(sf);
 
 			CreateTrayMenu();
@@ -38,7 +38,7 @@ namespace Concur
 		}
 
 		// Display the folder sync into the main panel
-		private void DisplaySync(SyncFile sf)
+		private void DisplaySync(FileSync sf)
 		{
 			Panel panel = new Panel();
 			Label name = new Label();
@@ -153,13 +153,13 @@ namespace Concur
 			panel.Top = cnt > 0 ? pnlSyncs.Controls[cnt - 1].Top + 37 : -1;
 			//pnlSyncs.Controls.Add(panel);
 
-			SyncControl sc = new SyncControl(sf);
+			SyncView sc = new SyncView(sf);
 			sc.Top = cnt > 0 ? pnlSyncs.Controls[cnt - 1].Top + 37 : -1;
 			pnlSyncs.Controls.Add(sc);
 		}
 
 		// Adds the folders into a panel, which is added to the containing panel
-		private Panel CreateFoldersPanel(SyncFile sf, string location = "Example: C:\\MyFolder")
+		private Panel CreateFoldersPanel(FileSync sf, string location = "Example: C:\\MyFolder")
 		{
 			Panel container = new Panel();
 			container.Left = 7;
@@ -353,11 +353,11 @@ namespace Concur
 
 		private void menuNew_Click(object sender, EventArgs e)
 		{
-			AddSync addForm = new AddSync();
+			AddView addForm = new AddView();
 			var result = addForm.ShowDialog();
 			if (result == DialogResult.OK)
 			{
-				SyncFile sf = addForm.fileSyncer;
+				FileSync sf = addForm.fileSyncer;
 				manager.RegisterSync(sf);
 				DisplaySync(sf);
 			}

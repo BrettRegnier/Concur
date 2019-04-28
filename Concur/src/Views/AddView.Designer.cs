@@ -1,6 +1,6 @@
 ﻿namespace Concur
 {
-	partial class AddSync
+	partial class AddView
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -28,7 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddSync));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddView));
 			this.btnCancel = new System.Windows.Forms.Button();
 			this.btnOk = new System.Windows.Forms.Button();
 			this.pnlLocations = new System.Windows.Forms.Panel();
