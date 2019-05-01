@@ -16,7 +16,7 @@ namespace Concur
 		public event UpdateList UpdateView;
 
 		// Enum for delegates
-		private enum ButtonType
+		public enum ButtonType
 		{
 			Edit = 0,
 			Delete = 1
@@ -100,14 +100,8 @@ namespace Concur
 			if (!_isEditting)
 			{
 				// a new panel should be added, which is the editting panel
-				Label panelLabel = new Label();
-				panelLabel.Text = "Folders";
-				panelLabel.Left = 7;
-				panelLabel.Top = 2;
-
-				_editPanel.Controls.Add(panelLabel);
-				_editPanel.Controls.Add(CreateFoldersPanel(_fileSync));
-				_editPanel.Top = this.Top + this.Height;
+				CreateFoldersPanel(_fileSync);
+				_editPanel.Top = 38;
 
 				this.Controls.Add(_editPanel);
 				this.Height += addHeight;
@@ -123,8 +117,15 @@ namespace Concur
 			}
 			UpdateView(0, this);
 		}
-		private Panel CreateFoldersPanel(FileSync sf, string location = "Example: C:\\MyFolder")
+		private void CreateFoldersPanel(FileSync sf, string location = "Example: C:\\MyFolder")
 		{
+			Label foldersLabel = new Label();
+			foldersLabel.Text = "Folders";
+			foldersLabel.Left = 7;
+			foldersLabel.Top = 2;
+
+			_editPanel.Controls.Add(foldersLabel);
+
 			Panel container = new Panel();
 			container.Left = 7;
 			container.Top = 44;
@@ -217,7 +218,10 @@ namespace Concur
 
 				container.Controls.Add(panel);
 			}
-			return container;
+
+
+			_editPanel.Controls.Add(foldersLabel);
+			_editPanel.Controls.Add(container);
 		}
 
 		private void Remove_Click(object sender, EventArgs e)

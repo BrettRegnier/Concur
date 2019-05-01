@@ -28,9 +28,9 @@ namespace Concur
 		private void AddSyncView(FileSync sync)
 		{
 			SyncView view = new SyncView(sync);
-			view.Top = Controls.Count * 36;
+			view.Top = pnlDisplay.Controls.Count * 36;
 			view.UpdateView += UpdateView;
-			Controls.Add(view);
+			pnlDisplay.Controls.Add(view);
 		}
 
 		// Transfer this to the main view
@@ -53,6 +53,36 @@ namespace Concur
 			{
 				// deleting
 			}
+		}
+
+		private void pnlTitle_Paint(object sender, PaintEventArgs e)
+		{
+			// Left, Top, Right, Bottom
+			ControlPaint.DrawBorder(e.Graphics, pnlTitle.ClientRectangle,
+				Color.Transparent, 0, ButtonBorderStyle.Inset,
+				Color.Transparent, 0, ButtonBorderStyle.Inset,
+				Color.Transparent, 0, ButtonBorderStyle.Inset,
+				Color.White, 1, ButtonBorderStyle.Inset);
+		}
+
+		private void pnlMenu_Paint(object sender, PaintEventArgs e)
+		{
+			// Left, Top, Right, Bottom
+			ControlPaint.DrawBorder(e.Graphics, pnlMenu.ClientRectangle,
+				Color.Transparent, 0, ButtonBorderStyle.Inset,
+				Color.Transparent, 0, ButtonBorderStyle.Inset,
+				Color.White, 1, ButtonBorderStyle.Inset,
+				Color.Transparent, 0, ButtonBorderStyle.Inset);
+		}
+
+		private void Test_Paint(object sender, PaintEventArgs e)
+		{
+			// Left, Top, Right, Bottom
+			ControlPaint.DrawBorder(e.Graphics, ClientRectangle,
+				Color.White, 1, ButtonBorderStyle.Inset,
+				Color.White, 1, ButtonBorderStyle.Inset,
+				Color.White, 1, ButtonBorderStyle.Inset,
+				Color.White, 1, ButtonBorderStyle.Inset);
 		}
 	}
 }
