@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,10 +28,12 @@ namespace Concur
 		// This might be a custom class. dunno yet...
 		Panel _editPanel = new Panel();
 
-		Label _name = new Label();
-		Label _lastSync = new Label();
-		Button _edit = new Button();
-		Button _remove = new Button();
+		Label _lblName = new Label();
+		Label _lblLastSync = new Label();
+		Label _lblProgress = new Label();
+		ProgressBar _pbSave = new ProgressBar();
+		Button _btnEdit = new Button();
+		Button _btnRemove = new Button();
 
 		bool _isEditting = false;
 
@@ -43,52 +46,63 @@ namespace Concur
 		private void InitializeComponent()
 		{
 			this.SuspendLayout();
+			Font font = new Font("Microsoft Sans Serif", 16);
+
 
 			// _name
-			this._name.AutoSize = true;
-			this._name.Location = new System.Drawing.Point(3, 7);
-			this._name.Name = "lblName";
-			this._name.Size = new System.Drawing.Size(33, 13);
-			this._name.TabIndex = 0;
-			this._name.Text = _fileSync.Name;
+			this._lblName.AutoSize = true;
+			this._lblName.Location = new System.Drawing.Point(6, 5);
+			this._lblName.Name = "lblName";
+			this._lblName.TabIndex = 0;
+			this._lblName.Text = _fileSync.Name;
+			this._lblName.Font = font;
 
 			// _lastsync
-			this._lastSync.AutoSize = true;
-			this._lastSync.Location = new System.Drawing.Point(131, 7);
-			this._lastSync.Name = "lblLastSync";
-			this._lastSync.Size = new System.Drawing.Size(33, 13);
-			this._lastSync.TabIndex = 0;
-			this._lastSync.Text = _fileSync.LastSync;
+			this._lblLastSync.AutoSize = true;
+			this._lblLastSync.Location = new System.Drawing.Point(180, 5);
+			this._lblLastSync.Name = "lblLastSync";
+			this._lblLastSync.TabIndex = 0;
+			this._lblLastSync.Text = _fileSync.LastSync;
+			this._lblLastSync.Font = font;
+
+			// Progress bar and label goes here.
+			// _lastsync
+			this._lblProgress.AutoSize = true;
+			this._lblProgress.Location = new System.Drawing.Point(517, 5);
+			this._lblProgress.Name = "lblProgress";
+			this._lblProgress.TabIndex = 0;
+			this._lblProgress.Text = "Progress";
+			this._lblProgress.Font = font;
 
 			//edit
-			this._edit.Location = new System.Drawing.Point(473, 7);
-			this._edit.Name = "_edit";
-			this._edit.Size = new System.Drawing.Size(29, 23);
-			this._edit.TabIndex = 0;
-			this._edit.Text = "";
-			this._edit.Image = Properties.Resources.edit;
-			this._edit.UseVisualStyleBackColor = true;
-			this._edit.Click += Edit_Click;
+			this._btnEdit.Location = new System.Drawing.Point(924, 9);
+			this._btnEdit.Name = "_edit";
+			this._btnEdit.Size = new System.Drawing.Size(29, 23);
+			this._btnEdit.TabIndex = 0;
+			this._btnEdit.Text = "";
+			this._btnEdit.Image = Properties.Resources.edit;
+			this._btnEdit.UseVisualStyleBackColor = true;
+			this._btnEdit.Click += Edit_Click;
 
 			//remove
-			this._remove.Location = new System.Drawing.Point(508, 7);
-			this._remove.Name = "_remove";
-			this._remove.Size = new System.Drawing.Size(29, 23);
-			this._remove.TabIndex = 0;
-			this._remove.Text = "";
-			this._remove.Image = Properties.Resources.delete;
-			this._remove.UseVisualStyleBackColor = true;
-			this._remove.Click += Remove_Click;
+			this._btnRemove.Location = new System.Drawing.Point(959, 9);
+			this._btnRemove.Name = "_remove";
+			this._btnRemove.Size = new System.Drawing.Size(29, 23);
+			this._btnRemove.TabIndex = 0;
+			this._btnRemove.Text = "";
+			this._btnRemove.Image = Properties.Resources.delete;
+			this._btnRemove.UseVisualStyleBackColor = true;
+			this._btnRemove.Click += Remove_Click;
 
 			this.BorderStyle = BorderStyle.FixedSingle;
 			this.Left = -1;
-			this.Width = 542;
-			this.Height = 38;
+			this.Width = 1001;
+			this.Height = 41;
 
-			this.Controls.Add(this._name);
-			this.Controls.Add(this._lastSync);
-			this.Controls.Add(this._edit);
-			this.Controls.Add(this._remove);
+			this.Controls.Add(this._lblName);
+			this.Controls.Add(this._lblLastSync);
+			this.Controls.Add(this._btnEdit);
+			this.Controls.Add(this._btnRemove);
 
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -248,8 +262,8 @@ namespace Concur
 
 		public void UpdateText()
 		{
-			this._name.Text = _fileSync.Name;
-			this._lastSync.Text = _fileSync.LastSync;
+			this._lblName.Text = _fileSync.Name;
+			this._lblLastSync.Text = _fileSync.LastSync;
 		}
 	}
 }
