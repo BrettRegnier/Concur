@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,8 +46,8 @@ namespace Concur
 		private void InitializeComponent()
 		{
 			this.SuspendLayout();
-			Font font = new Font("Microsoft Sans Serif", 14);
-			Color color = Color.White;
+			System.Drawing.Font font = new System.Drawing.Font("Microsoft Sans Serif", 14);
+			System.Drawing.Color color = System.Drawing.Color.White;
 
 			// _lblName
 			this._lblName.AutoSize = true;
@@ -114,7 +113,7 @@ namespace Concur
 
 			this.BorderStyle = BorderStyle.FixedSingle;
 			this.Left = -1;
-			this.Width = 1001;
+			this.Width = 1002;
 			this.Height = 41;
 
 			this.Controls.Add(this._lblName);
@@ -131,12 +130,15 @@ namespace Concur
 
 		private void Edit_Click(object sender, EventArgs e)
 		{
-			int addHeight = 171;
+			int addHeight = 202;
 			if (!_isEditting)
 			{
+				this._editPanel.Size = new System.Drawing.Size(1001, 200);
+				this._editPanel.Location = new System.Drawing.Point(0, 43);
+				this._editPanel.BorderStyle = BorderStyle.FixedSingle;
+
 				// a new panel should be added, which is the editting panel
 				CreateFoldersPanel(_fileSync);
-				_editPanel.Top = 38;
 
 				this.Controls.Add(_editPanel);
 				this.Height += addHeight;
@@ -154,18 +156,21 @@ namespace Concur
 		}
 		private void CreateFoldersPanel(FileSync sf, string location = "Example: C:\\MyFolder")
 		{
+			System.Drawing.Font font = new System.Drawing.Font("Microsoft Sans Serif", 14);
+			System.Drawing.Color color = System.Drawing.Color.White;
+
 			Label foldersLabel = new Label();
 			foldersLabel.Text = "Folders";
-			foldersLabel.Left = 7;
-			foldersLabel.Top = 2;
+			foldersLabel.Location = new System.Drawing.Point(3, 0);
+			foldersLabel.ForeColor = color;
+			foldersLabel.Font = font;
 
 			_editPanel.Controls.Add(foldersLabel);
 
 			Panel container = new Panel();
-			container.Left = 7;
-			container.Top = 44;
-			container.Width = 321;
-			container.Height = 141;
+			container.Location = new System.Drawing.Point(7, 26);
+			container.Size = new System.Drawing.Size(322, 170);
+			container.BackColor = System.Drawing.Color.Blue;
 			container.BorderStyle = BorderStyle.FixedSingle;
 			container.AutoScroll = true;
 
