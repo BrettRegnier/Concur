@@ -15,7 +15,17 @@ namespace Concur
 		private string _name;
 
 		public int ID { get; private set; }
-		public string LastSync { get; private set; }
+		// TODO last sync should get an int timestamp and convert it into a custom string
+		public string LastSync { get; private set; } // make a time formatter...
+		public string NextSync
+		{
+			get
+			{
+				// TODO
+				// return the last sync plus the interval.
+				return "Not implemented";
+			}
+		}
 		public string Name { get { return _name; } set { _name = value; } }
 
 		public FileSync(int id, string name, string[] folders, string lastSync = "", int syncTime = 600000)

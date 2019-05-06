@@ -30,7 +30,8 @@ namespace Concur
 
 		Label _lblName = new Label();
 		Label _lblLastSync = new Label();
-		Label _lblProgress = new Label();
+		Label _lblNextSync = new Label();
+		Label _lblSave = new Label();
 		ProgressBar _pbSave = new ProgressBar();
 		Button _btnEdit = new Button();
 		Button _btnRemove = new Button();
@@ -46,35 +47,52 @@ namespace Concur
 		private void InitializeComponent()
 		{
 			this.SuspendLayout();
-			Font font = new Font("Microsoft Sans Serif", 16);
+			Font font = new Font("Microsoft Sans Serif", 14);
+			Color color = Color.White;
 
-
-			// _name
+			// _lblName
 			this._lblName.AutoSize = true;
-			this._lblName.Location = new System.Drawing.Point(6, 5);
+			this._lblName.Location = new System.Drawing.Point(6, 6);
 			this._lblName.Name = "lblName";
 			this._lblName.TabIndex = 0;
 			this._lblName.Text = _fileSync.Name;
 			this._lblName.Font = font;
+			this._lblName.ForeColor = color;
 
-			// _lastsync
+			// _lblLastSync
 			this._lblLastSync.AutoSize = true;
-			this._lblLastSync.Location = new System.Drawing.Point(180, 5);
+			this._lblLastSync.Location = new System.Drawing.Point(131, 6);
 			this._lblLastSync.Name = "lblLastSync";
 			this._lblLastSync.TabIndex = 0;
 			this._lblLastSync.Text = _fileSync.LastSync;
 			this._lblLastSync.Font = font;
+			this._lblLastSync.ForeColor = color;
 
-			// Progress bar and label goes here.
-			// _lastsync
-			this._lblProgress.AutoSize = true;
-			this._lblProgress.Location = new System.Drawing.Point(517, 5);
-			this._lblProgress.Name = "lblProgress";
-			this._lblProgress.TabIndex = 0;
-			this._lblProgress.Text = "Progress";
-			this._lblProgress.Font = font;
+			// _lblNextSync
+			this._lblNextSync.AutoSize = true;
+			this._lblNextSync.Location = new System.Drawing.Point(377, 6);
+			this._lblNextSync.Name = "lblNextSync";
+			this._lblNextSync.TabIndex = 0;
+			this._lblNextSync.Text = _fileSync.NextSync;
+			this._lblNextSync.Font = font;
+			this._lblNextSync.ForeColor = color;
 
-			//edit
+			// _lblSave
+			this._lblSave.AutoSize = true;
+			this._lblSave.Location = new System.Drawing.Point(642, 6);
+			this._lblSave.Name = "lblProgress";
+			this._lblSave.TabIndex = 0;
+			this._lblSave.Text = "Sync Progress";
+			this._lblSave.Font = font;
+			this._lblSave.ForeColor = color;
+
+			// _pbSave
+			this._pbSave.Location = new System.Drawing.Point(780, 9);
+			this._pbSave.Name = "pbSave";
+			this._pbSave.Size = new System.Drawing.Size(138, 23);
+			this._pbSave.TabIndex = 4;
+
+			// _btnEdit
 			this._btnEdit.Location = new System.Drawing.Point(924, 9);
 			this._btnEdit.Name = "_edit";
 			this._btnEdit.Size = new System.Drawing.Size(29, 23);
@@ -84,7 +102,7 @@ namespace Concur
 			this._btnEdit.UseVisualStyleBackColor = true;
 			this._btnEdit.Click += Edit_Click;
 
-			//remove
+			// _btnRemove
 			this._btnRemove.Location = new System.Drawing.Point(959, 9);
 			this._btnRemove.Name = "_remove";
 			this._btnRemove.Size = new System.Drawing.Size(29, 23);
@@ -101,6 +119,9 @@ namespace Concur
 
 			this.Controls.Add(this._lblName);
 			this.Controls.Add(this._lblLastSync);
+			this.Controls.Add(this._lblNextSync);
+			this.Controls.Add(this._lblSave);
+			this.Controls.Add(this._pbSave);
 			this.Controls.Add(this._btnEdit);
 			this.Controls.Add(this._btnRemove);
 

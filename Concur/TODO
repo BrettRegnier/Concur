@@ -9,6 +9,9 @@
 -Error checking
 -Installer
 
+Need to do:
+Change the timestamp to be an int value instead and I can format it myself for future use.
+
 Maybe:
 -Add a textbox extender
 
