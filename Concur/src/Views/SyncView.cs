@@ -12,7 +12,7 @@ namespace Concur
 		//public static List<SyncView> _syncViews = new List<SyncView>();
 		// TODO fix delegates
 		// delegates
-		public delegate void UpdateList(int type, SyncView sender);
+		public delegate void UpdateList(ButtonType type, SyncView sender);
 		public event UpdateList UpdateView;
 
 		// Enum for delegates
@@ -36,6 +36,8 @@ namespace Concur
 		Button _btnRemove = new Button();
 
 		bool _isEditting = false;
+
+		public FileSync FileSync { get { return _fileSync; } }
 
 		public SyncView(FileSync syncfile)
 		{
@@ -152,7 +154,7 @@ namespace Concur
 				_isEditting = false;
 				_editPanel = new Panel();
 			}
-			UpdateView(0, this);
+			UpdateView(ButtonType.Edit, this);
 		}
 		private void CreateFoldersPanel(FileSync sf, string location = "Example: C:\\MyFolder")
 		{
@@ -170,7 +172,7 @@ namespace Concur
 			Panel container = new Panel();
 			container.Location = new System.Drawing.Point(7, 26);
 			container.Size = new System.Drawing.Size(322, 170);
-			container.BackColor = System.Drawing.Color.Blue;
+			//container.BackColor = System.Drawing.Color.Blue;
 			container.BorderStyle = BorderStyle.FixedSingle;
 			container.AutoScroll = true;
 
@@ -266,7 +268,7 @@ namespace Concur
 
 		private void Remove_Click(object sender, EventArgs e)
 		{
-			throw new NotImplementedException();
+			UpdateView(ButtonType.Delete, this);
 		}
 
 		private void HidePlaceholderText(object sender, EventArgs e)
