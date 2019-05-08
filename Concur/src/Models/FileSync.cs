@@ -77,6 +77,7 @@ namespace Concur
 		// return false for failure, return true for success
 		private bool Sync(List<Folder> folders)
 		{
+			// TODO Check if the files are included?
 			try
 			{
 				bool success = true;
@@ -84,14 +85,14 @@ namespace Concur
 					return false;
 
 				// Associated list of files that are the newest overall and will be synced to the other folders.
-				List<List<FileInfo>> files = new List<List<FileInfo>>();
+				List<List<File>> files = new List<List<File>>();
 
 				// Could probably take off the last one since at the point all files should have been checked.
 				for (int i = 0; i < folders.Count; i++)
 				{
 					if (!folders[i].CheckPathExists()) folders[i].CreateSubPath();
-					files.Add(new List<FileInfo>());
-					foreach (FileInfo sf in folders[i].Files())
+					files.Add(new List<File>());
+					foreach (File sfile in folders[i].Files())
 					{
 						bool isNewest = true;
 						for (int j = 0; j < folders.Count; j++)
@@ -99,22 +100,22 @@ namespace Concur
 							if (i == j) continue;
 							if (!folders[j].CheckPathExists()) folders[j].CreateSubPath();
 
-							foreach (FileInfo df in folders[j].Files())
+							foreach (File dfile in folders[j].Files())
 							{
-								if (sf.Name == df.Name)
+								if (sfile.Name == dfile.Name)
 								{
-									isNewest = System.IO.File.GetLastWriteTime(sf.FullName) > System.IO.File.GetLastWriteTime(df.FullName);
+									isNewest = System.IO.File.GetLastWriteTime(sfile.FullName) > System.IO.File.GetLastWriteTime(dfile.FullName);
 								}
 							}
 						}
 
-						if (isNewest) files[i].Add(sf);
+						if (isNewest) files[i].Add(sfile);
 					}
 				}
 
 				for (int i = 0; i < files.Count; i++)
 				{
-					foreach (FileInfo file in files[i])
+					foreach (File file in files[i])
 					{
 						for (int j = 0; j < folders.Count; j++)
 						{

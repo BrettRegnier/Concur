@@ -3,33 +3,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
+using System.Xml.Linq;
 
 namespace Concur
 {
-	class File
+	public class File
 	{
-		string name;
-		string path;
+		private FileInfo info;
 		
-		public File(string pth, string nme)
+		public string Name { get { return info.Name; } }
+		public string FullName { get { return info.FullName; } }
+		public string Path { get { return info.DirectoryName; } }
+
+		public File(FileInfo f)
 		{
-			name = nme;
-			path = pth;
+			info = f;
 		}
 
-		public string Name()
+		public File(string fullPath)
 		{
-			return name;
+			FileInfo f = new FileInfo(fullPath);
 		}
 
-		public string FullName()
+		public XElement ToXML()
 		{
-			return path + "\\" + name;
-		}
-
-		public string Path()
-		{
-			return path;
+			// TODO
+			throw new NotImplementedException();
 		}
 	}
 }

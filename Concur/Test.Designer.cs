@@ -55,6 +55,7 @@
 			this.btnPref = new System.Windows.Forms.Button();
 			this.pnlDisplay = new System.Windows.Forms.Panel();
 			this.pnlTitle = new System.Windows.Forms.Panel();
+			this.panel5 = new System.Windows.Forms.Panel();
 			this.pnlMenu.SuspendLayout();
 			this.panel2.SuspendLayout();
 			this.panel4.SuspendLayout();
@@ -86,19 +87,20 @@
 			this.panel2.Controls.Add(this.label8);
 			this.panel2.Controls.Add(this.button3);
 			this.panel2.Controls.Add(this.button4);
-			this.panel2.Location = new System.Drawing.Point(44, 507);
+			this.panel2.Location = new System.Drawing.Point(32, 515);
 			this.panel2.Name = "panel2";
-			this.panel2.Size = new System.Drawing.Size(1000, 211);
+			this.panel2.Size = new System.Drawing.Size(1000, 265);
 			this.panel2.TabIndex = 7;
 			// 
 			// panel4
 			// 
 			this.panel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+			this.panel4.Controls.Add(this.panel5);
 			this.panel4.Controls.Add(this.label9);
 			this.panel4.Controls.Add(this.panel3);
 			this.panel4.Location = new System.Drawing.Point(0, 43);
 			this.panel4.Name = "panel4";
-			this.panel4.Size = new System.Drawing.Size(1000, 168);
+			this.panel4.Size = new System.Drawing.Size(1000, 219);
 			this.panel4.TabIndex = 9;
 			// 
 			// label9
@@ -115,7 +117,7 @@
 			// 
 			this.panel3.Location = new System.Drawing.Point(7, 27);
 			this.panel3.Name = "panel3";
-			this.panel3.Size = new System.Drawing.Size(322, 139);
+			this.panel3.Size = new System.Drawing.Size(484, 189);
 			this.panel3.TabIndex = 8;
 			// 
 			// label5
@@ -343,6 +345,13 @@
 			this.pnlTitle.TabIndex = 2;
 			this.pnlTitle.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlTitle_Paint);
 			// 
+			// panel5
+			// 
+			this.panel5.Location = new System.Drawing.Point(497, 27);
+			this.panel5.Name = "panel5";
+			this.panel5.Size = new System.Drawing.Size(497, 189);
+			this.panel5.TabIndex = 9;
+			// 
 			// Test
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -396,5 +405,6 @@
 		private System.Windows.Forms.Panel panel3;
 		private System.Windows.Forms.Label label9;
 		private System.Windows.Forms.Panel panel4;
+		private System.Windows.Forms.Panel panel5;
 	}
 }

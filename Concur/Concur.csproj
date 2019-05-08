@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\Controllers\SyncController.cs" />
     <Compile Include="src\Views\AddView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -79,7 +80,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SyncDetail.cs" />
-    <Compile Include="src\Controllers\SyncController.cs" />
     <Compile Include="Test.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -128,6 +128,7 @@
     <None Include="TODO" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Icons\accept.png" />
     <Content Include="Icons\concuricon.ico" />
     <Content Include="Icons\delete.png" />
     <Content Include="Icons\edit.png" />

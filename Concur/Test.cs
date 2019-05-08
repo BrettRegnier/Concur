@@ -29,7 +29,6 @@ namespace Concur
 					s[j] = "test" + i.ToString();
 				AddSyncView("test" + i.ToString(), s);
 			}
-			
 		}
 
 		private void AddSyncView(string name, string[] s)

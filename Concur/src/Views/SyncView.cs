@@ -114,7 +114,7 @@ namespace Concur
 			this._btnRemove.Click += Remove_Click;
 
 			this.Paint += (sender, e) =>
-			{ 
+			{
 				// Left, Top, Right, Bottom
 				ControlPaint.DrawBorder(e.Graphics, this.ClientRectangle,
 					System.Drawing.Color.Transparent, 0, ButtonBorderStyle.Solid,
@@ -161,14 +161,15 @@ namespace Concur
 			}
 			UpdateView(ButtonType.Edit, this);
 		}
-		private void CreateEditPanel(FileSync sf, string location = "Example: C:\\MyFolder")
+		private void CreateEditPanel(FileSync fs, string location = "Example: C:\\MyFolder")
 		{
+			// TODO split this into its own class.
 			// magic numberrrrs
-			this._editPanel.Size = new System.Drawing.Size(1001, 300);
+			this._editPanel.Size = new System.Drawing.Size(1000, 300);
 			this._editPanel.Location = new System.Drawing.Point(0, 41);
 			this._editPanel.BorderStyle = BorderStyle.FixedSingle;
 
-			System.Drawing.Font font = new System.Drawing.Font("Microsoft Sans Serif", 14);
+			System.Drawing.Font font = new System.Drawing.Font("Miriam CLM", 14);
 			System.Drawing.Color color = System.Drawing.Color.White;
 
 			Label foldersLabel = new Label();
@@ -179,31 +180,77 @@ namespace Concur
 
 			Panel foldersPanel = new Panel();
 			foldersPanel.Location = new System.Drawing.Point(foldersLabel.Left + 2, foldersLabel.Top + 26);
-			foldersPanel.Size = new System.Drawing.Size(322, _editPanel.Height - 40);
-			//container.BackColor = System.Drawing.Color.Blue;
+			foldersPanel.Size = new System.Drawing.Size(484, _editPanel.Height - 40);
 			foldersPanel.BorderStyle = BorderStyle.FixedSingle;
 			foldersPanel.AutoScroll = true;
 
-			foreach (Folder folder in sf.Folders())
+
+			Label treeLabel = new Label();
+			TreeView tree = new TreeView();
+
+			foreach (Folder folder in fs.Folders())
 			{
+				string prevName = folder.Name;
+				string prevPath = folder.Path;
+				bool nameChanged = false;
+				bool pathChanged = false;
+
 				Panel panel = new Panel();
-				Label lbl = new Label();
-				TextBox txt = new TextBox();
+				TextBox name = new TextBox();
+				TextBox path = new TextBox();
 				Button browse = new Button();
+				Button accept = new Button();
 				Button delete = new Button();
 
-				lbl.Text = folder.Name;
-				lbl.Width = 100;
-				lbl.Height = 13;
+				name.Text = folder.Name;
+				name.Width = 200;
+				name.Height = 13;
+				name.BorderStyle = BorderStyle.None;
+				name.BackColor = System.Drawing.Color.FromArgb(35, 35, 35);
+				name.ForeColor = color;
+				name.MouseEnter += (sender, e) =>
+				{
+					System.Drawing.Rectangle border = new System.Drawing.Rectangle();
+					border.X = name.Left - 1;
+					border.Y = name.Top - 1;
+					border.Width = name.Width + 2;
+					border.Height = name.Height + 2;
 
-				txt.Text = folder.Path;
-				txt.GotFocus += HidePlaceholderText;
-				txt.LostFocus += ShowPlaceholderText;
-				txt.Width = 197;
+					System.Drawing.Pen pen = new System.Drawing.Pen(System.Drawing.Color.LightGray);
+					System.Drawing.Graphics graphics = panel.CreateGraphics();
+					graphics.DrawRectangle(pen, border);
+					pen.Dispose();
+					graphics.Dispose();
+				};
+				name.MouseLeave += (sender, e) => { panel.Invalidate(); };
+				name.TextChanged += (sender, e) => 
+				{
+					nameChanged = false;
+					if (name.Text != prevName) nameChanged = true;
+					EnableAccept();
+				};
+
+				path.Text = folder.Path;
+				path.GotFocus += HidePlaceholderText;
+				path.LostFocus += ShowPlaceholderText;
+				path.Width = 320;
+				path.Height = 36;
+				path.Font = new System.Drawing.Font("Miriam CLM", 10);
+				path.TextChanged += (sender, e) =>
+				{
+					pathChanged = false;
+					if (path.Text != "Example: C:\\MyFolder" && path.Text != prevPath)
+						pathChanged = true;
+					EnableAccept();
+				};
 
 				browse.Text = "...";
+				browse.ForeColor = System.Drawing.Color.White;
 				browse.Width = 36;
 				browse.UseVisualStyleBackColor = true;
+				browse.FlatStyle = FlatStyle.Flat;
+				browse.FlatAppearance.BorderSize = 1;
+				browse.FlatAppearance.BorderColor = System.Drawing.Color.LightGray;
 				browse.Click += (sender, e) =>
 				{
 					using (var fbd = new FolderBrowserDialog())
@@ -211,60 +258,111 @@ namespace Concur
 						DialogResult r = fbd.ShowDialog();
 						if (r == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
 						{
-							txt.Text = fbd.SelectedPath;
-							txt.ForeColor = System.Drawing.Color.Black;
-							// TODO update the file sync with the new folder
-							//sf = new FileSync() 
+							path.Text = fbd.SelectedPath;
+							path.ForeColor = System.Drawing.Color.Black;
 						}
+					}
+				};
+
+				void EnableAccept()
+				{
+					if (nameChanged || pathChanged) accept.Enabled = true;
+					else accept.Enabled = false;
+				}
+				
+				accept.Image = Properties.Resources.accept;
+				accept.Width = 36;
+				accept.UseVisualStyleBackColor = true;
+				accept.FlatStyle = FlatStyle.Flat;
+				accept.FlatAppearance.BorderSize = 1;
+				accept.Enabled = false;
+				accept.FlatAppearance.BorderColor = System.Drawing.Color.LightGray;
+				accept.Click += (sender, e) =>
+				{
+					DialogResult confirm = MessageBox.Show("Are you sure you want to make these changes?", "Confirm Change", MessageBoxButtons.YesNoCancel);
+					if (confirm == DialogResult.Yes)
+					{
+						if (nameChanged)
+						{
+							prevName = name.Text;
+							folder.UpdateName(name.Text);
+							nameChanged = false;
+						}
+						if (pathChanged)
+						{
+							prevPath = path.Text;
+							folder.UpdateFolder(path.Text);
+							pathChanged = false;
+
+							//Update the tree structure
+							ListDirectory(tree, fs);
+						}
+
+						accept.Enabled = false;
+					}
+					else if (confirm == DialogResult.No)
+					{
+						name.Text = prevName;
+						path.Text = prevPath;
 					}
 				};
 
 				delete.Image = Properties.Resources.delete;
-				delete.ForeColor = System.Drawing.Color.Red;
 				delete.Width = 36;
 				delete.UseVisualStyleBackColor = true;
+				delete.FlatStyle = FlatStyle.Flat;
+				delete.FlatAppearance.BorderSize = 1;
+				delete.FlatAppearance.BorderColor = System.Drawing.Color.LightGray;
 				delete.Click += (sender, e) =>
 				{
-					bool find = false;
-					if (foldersPanel.Controls.Count > 2)
+					DialogResult confirm = MessageBox.Show("Are you sure you want to delete this entry?", "Confirm Deletion", MessageBoxButtons.YesNo);
+					if (confirm == DialogResult.Yes)
 					{
-
-						for (int i = 0; i < foldersPanel.Controls.Count; i++)
+						bool find = false;
+						if (foldersPanel.Controls.Count > 2)
 						{
 
-							if (find)
-								foldersPanel.Controls[i].Top -= 52;
-							if (panel == foldersPanel.Controls[i])
-								find = true;
+							for (int i = 0; i < foldersPanel.Controls.Count; i++)
+							{
+
+								if (find)
+									foldersPanel.Controls[i].Top -= 52;
+								if (panel == foldersPanel.Controls[i])
+									find = true;
+							}
+							foldersPanel.Controls.Remove(panel);
 						}
-						foldersPanel.Controls.Remove(panel);
-					}
-					else
-					{
-						txt.Text = "";
-						ShowPlaceholderText(txt, null);
+						else
+						{
+							path.Text = "";
+							ShowPlaceholderText(path, null);
+						}
 					}
 				};
 
 
-				lbl.Left = 1;
-				lbl.Top = 2;
+				name.Left = 3;
+				name.Top = 2;
 
-				txt.Left = 10;
-				txt.Top = 20;
+				path.Left = 10;
+				path.Top = 20;
 
-				browse.Left = 213;
-				browse.Top = 20;
+				browse.Left = path.Right + 10;
+				browse.Top = path.Top;
 
-				delete.Left = 255;
-				delete.Top = 20;
+				accept.Left = browse.Right + 5;
+				accept.Top = browse.Top;
 
-				panel.Controls.Add(lbl);
-				panel.Controls.Add(txt);
+				delete.Left = accept.Right + 5;
+				delete.Top = accept.Top;
+
+				panel.Controls.Add(name);
+				panel.Controls.Add(path);
 				panel.Controls.Add(browse);
+				panel.Controls.Add(accept);
 				panel.Controls.Add(delete);
 
-				panel.Width = 300;
+				panel.Width = 464;
 				panel.Height = 46;
 
 				panel.Left = 0;
@@ -279,8 +377,6 @@ namespace Concur
 			// TODO there needs to be a way of checking them "out" so they are considered when syncing.
 			// TODO should be able to load in the files based on what I already have in a file sync
 
-
-			Label treeLabel = new Label();
 			treeLabel.Text = "Files Structure";
 			treeLabel.Left = foldersPanel.Left + foldersPanel.Width + 10;
 			treeLabel.Top = foldersLabel.Top;
@@ -288,12 +384,43 @@ namespace Concur
 			treeLabel.ForeColor = color;
 
 			// _tree view
-			TreeView tree = new TreeView();
 			tree.Left = treeLabel.Left + 5;
 			tree.Top = foldersPanel.Top;
 			tree.BackColor = System.Drawing.Color.FromArgb(35, 35, 35);
 			tree.Width = foldersPanel.Width;
 			tree.Height = foldersPanel.Height;
+			tree.CheckBoxes = true;
+			tree.Font = font;
+			tree.ForeColor = color;
+
+			bool isCascading = false;
+			TreeNode root;
+			TreeNode clickedNode;
+			tree.AfterCheck += (sender, e) =>
+			{
+				if (!isCascading)
+				{
+					isCascading = true;
+					Cascade(e.Node);
+				}
+			};
+
+			void Cascade(TreeNode node)
+			{
+				// TODO
+				// cascade children
+				foreach (TreeNode child in node.Nodes)
+				{
+
+				}
+
+				//cascade parents
+
+				//cascade equal?? maybe.
+
+			}
+
+			ListDirectory(tree, fs);
 
 			_editPanel.Controls.Add(foldersLabel);
 			_editPanel.Controls.Add(foldersPanel);
@@ -324,12 +451,14 @@ namespace Concur
 			}
 		}
 
-		private void ListDirectory(TreeView tree, string path)
+		private void ListDirectory(TreeView tree, FileSync fs)
 		{
 			tree.Nodes.Clear();
-			System.IO.DirectoryInfo root = new System.IO.DirectoryInfo(path);
 
-			tree.Nodes.Add(CreateDirectoryNode(root));
+			foreach (Folder folder in fs.Folders())
+			{
+				tree.Nodes.Add(CreateDirectoryNode(folder.Info));
+			}
 		}
 
 		private TreeNode CreateDirectoryNode(System.IO.DirectoryInfo di)

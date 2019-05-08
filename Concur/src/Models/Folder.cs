@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Concur
 {
@@ -12,8 +13,8 @@ namespace Concur
 	{
 		string _path;
 		string _name = "Not implemented";
-		DirectoryInfo _info;
-		List<FileInfo> _files;
+		DirectoryInfo _directoryInfo;
+		List<File> _files;
 		List<Folder> _subfolders;
 
 		public Folder(string pth)
@@ -30,22 +31,23 @@ namespace Concur
 		private void Initialize(DirectoryInfo d)
 		{
 			_path = d.FullName;
-			_info = d;
+			_directoryInfo = d;
 
-			_files = new List<FileInfo>();
+			_files = new List<File>();
 			_subfolders = new List<Folder>();
 		}
 
 		public string Name { get { return _name; } }
 		public string Path { get { return _path; } }
+		public DirectoryInfo Info { get { return _directoryInfo; } }
 
-		public List<FileInfo> Files()
+		public List<File> Files()
 		{
 			if (_files.Count == 0)
 			{
-				FileInfo[] fils = _info.GetFiles();
+				FileInfo[] fils = _directoryInfo.GetFiles();
 				foreach (FileInfo f in fils)
-					_files.Add(f);
+					_files.Add(new File(f));
 			}
 
 			return _files;
@@ -55,7 +57,7 @@ namespace Concur
 		{
 			if (_subfolders.Count == 0)
 			{
-				DirectoryInfo[] fold = _info.GetDirectories();
+				DirectoryInfo[] fold = _directoryInfo.GetDirectories();
 				foreach (DirectoryInfo dir in fold)
 					_subfolders.Add(new Folder(dir));
 			}
@@ -112,6 +114,17 @@ namespace Concur
 		{
 			DirectoryInfo d = new DirectoryInfo(path);
 			Initialize(d);
+		}
+
+		public void UpdateName(string name)
+		{
+			_name = name;
+		}
+
+		public XElement ToXML()
+		{
+			// TODO
+			throw new NotImplementedException();
 		}
 	}
 }

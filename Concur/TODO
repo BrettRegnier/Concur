@@ -10,6 +10,8 @@
 -Installer
 
 Need to do:
+Refactor code now that there are overrides on what files to be synced.
+-Check that the folder selected is not a duplicate.
 Change the timestamp to be an int value instead and I can format it myself for future use.
 
 Maybe:
@@ -19,3 +21,5 @@ Feature:
 -Split syncing into 2 way sync, and master - slaves sync 
 -Create log
 -Progress bars
+-Backup the files before each resync (adds complexity and storage requirement)
+-Disable a sync
