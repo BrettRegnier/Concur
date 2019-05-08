@@ -7,61 +7,60 @@ using System.Threading.Tasks;
 
 namespace Concur
 {
+	//TODO name should be something that is chosen by the user
 	public class Folder
 	{
-		string path;
-		string name;
-		DirectoryInfo info;
-		List<FileInfo> files;
-		List<Folder> folders;
+		string _path;
+		string _name = "Not implemented";
+		DirectoryInfo _info;
+		List<FileInfo> _files;
+		List<Folder> _subfolders;
 
 		public Folder(string pth)
 		{
 			DirectoryInfo d = new DirectoryInfo(pth);
-
-			path = pth;
-			name = d.Name;
-			info = d;
-
-			files = new List<FileInfo>();
-			folders = new List<Folder>();
+			Initialize(d);
 		}
 
 		public Folder(DirectoryInfo d)
 		{
-			path = d.FullName;
-			name = d.Name;
-			info = d;
-
-			files = new List<FileInfo>();
-			folders = new List<Folder>();
+			Initialize(d);
 		}
 
-		public string Name { get { return name; } }
-		public string Path { get { return path; } }
+		private void Initialize(DirectoryInfo d)
+		{
+			_path = d.FullName;
+			_info = d;
+
+			_files = new List<FileInfo>();
+			_subfolders = new List<Folder>();
+		}
+
+		public string Name { get { return _name; } }
+		public string Path { get { return _path; } }
 
 		public List<FileInfo> Files()
 		{
-			if (files.Count == 0)
+			if (_files.Count == 0)
 			{
-				FileInfo[] fils = info.GetFiles();
+				FileInfo[] fils = _info.GetFiles();
 				foreach (FileInfo f in fils)
-					files.Add(f);
+					_files.Add(f);
 			}
 
-			return files;
+			return _files;
 		}
 
-		public List<Folder> Folders()
+		public List<Folder> SubFolders()
 		{
-			if (folders.Count == 0)
+			if (_subfolders.Count == 0)
 			{
-				DirectoryInfo[] fold = info.GetDirectories();
+				DirectoryInfo[] fold = _info.GetDirectories();
 				foreach (DirectoryInfo dir in fold)
-					folders.Add(new Folder(dir));
+					_subfolders.Add(new Folder(dir));
 			}
 
-			return folders;
+			return _subfolders;
 		}
 
 		public bool CheckPathExists()
@@ -69,7 +68,7 @@ namespace Concur
 			bool exists = false;
 
 			// gets the root first.
-			string[] subDir = path.Split('\\');
+			string[] subDir = _path.Split('\\');
 			string curPath = subDir[0];
 			if (Directory.Exists(curPath))
 			{
@@ -94,13 +93,25 @@ namespace Concur
 
 		public void CreateSubPath()
 		{
-			string[] subDir = path.Split('\\');
+			string[] subDir = _path.Split('\\');
 			string curPath = subDir[0];
 			for (int i = 1; i < subDir.Length; i++)
 			{
 				curPath += "\\" + subDir[i];
 				Directory.CreateDirectory(curPath);
 			}
+		}
+
+		public void UpdateFolder(string name, string path)
+		{
+			_name = name;
+			UpdateFolder(path);
+		}
+
+		public void UpdateFolder(string path)
+		{
+			DirectoryInfo d = new DirectoryInfo(path);
+			Initialize(d);
 		}
 	}
 }

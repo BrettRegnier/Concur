@@ -29,12 +29,6 @@
 		private void InitializeComponent()
 		{
 			this.pnlMenu = new System.Windows.Forms.Panel();
-			this.btnExit = new System.Windows.Forms.Button();
-			this.btnHelp = new System.Windows.Forms.Button();
-			this.btnSearch = new System.Windows.Forms.Button();
-			this.btnForce = new System.Windows.Forms.Button();
-			this.btnPref = new System.Windows.Forms.Button();
-			this.pnlDisplay = new System.Windows.Forms.Panel();
 			this.panel2 = new System.Windows.Forms.Panel();
 			this.panel4 = new System.Windows.Forms.Panel();
 			this.label9 = new System.Windows.Forms.Label();
@@ -54,6 +48,12 @@
 			this.label1 = new System.Windows.Forms.Label();
 			this.button2 = new System.Windows.Forms.Button();
 			this.button1 = new System.Windows.Forms.Button();
+			this.btnExit = new System.Windows.Forms.Button();
+			this.btnHelp = new System.Windows.Forms.Button();
+			this.btnSearch = new System.Windows.Forms.Button();
+			this.btnForce = new System.Windows.Forms.Button();
+			this.btnPref = new System.Windows.Forms.Button();
+			this.pnlDisplay = new System.Windows.Forms.Panel();
 			this.pnlTitle = new System.Windows.Forms.Panel();
 			this.pnlMenu.SuspendLayout();
 			this.panel2.SuspendLayout();
@@ -75,78 +75,6 @@
 			this.pnlMenu.Size = new System.Drawing.Size(200, 780);
 			this.pnlMenu.TabIndex = 0;
 			this.pnlMenu.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlMenu_Paint);
-			// 
-			// btnExit
-			// 
-			this.btnExit.FlatAppearance.BorderSize = 0;
-			this.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnExit.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnExit.ForeColor = System.Drawing.Color.White;
-			this.btnExit.Location = new System.Drawing.Point(0, 660);
-			this.btnExit.Name = "btnExit";
-			this.btnExit.Size = new System.Drawing.Size(199, 120);
-			this.btnExit.TabIndex = 4;
-			this.btnExit.Text = "Exit";
-			this.btnExit.UseVisualStyleBackColor = true;
-			// 
-			// btnHelp
-			// 
-			this.btnHelp.FlatAppearance.BorderSize = 0;
-			this.btnHelp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnHelp.ForeColor = System.Drawing.Color.White;
-			this.btnHelp.Location = new System.Drawing.Point(0, 360);
-			this.btnHelp.Name = "btnHelp";
-			this.btnHelp.Size = new System.Drawing.Size(199, 120);
-			this.btnHelp.TabIndex = 3;
-			this.btnHelp.Text = "Help";
-			this.btnHelp.UseVisualStyleBackColor = true;
-			// 
-			// btnSearch
-			// 
-			this.btnSearch.FlatAppearance.BorderSize = 0;
-			this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnSearch.ForeColor = System.Drawing.Color.White;
-			this.btnSearch.Location = new System.Drawing.Point(0, 240);
-			this.btnSearch.Name = "btnSearch";
-			this.btnSearch.Size = new System.Drawing.Size(199, 120);
-			this.btnSearch.TabIndex = 2;
-			this.btnSearch.Text = "Search";
-			this.btnSearch.UseVisualStyleBackColor = true;
-			// 
-			// btnForce
-			// 
-			this.btnForce.FlatAppearance.BorderSize = 0;
-			this.btnForce.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnForce.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnForce.ForeColor = System.Drawing.Color.White;
-			this.btnForce.Location = new System.Drawing.Point(0, 120);
-			this.btnForce.Name = "btnForce";
-			this.btnForce.Size = new System.Drawing.Size(199, 120);
-			this.btnForce.TabIndex = 1;
-			this.btnForce.Text = "Force Sync";
-			this.btnForce.UseVisualStyleBackColor = true;
-			// 
-			// btnPref
-			// 
-			this.btnPref.FlatAppearance.BorderSize = 0;
-			this.btnPref.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnPref.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnPref.ForeColor = System.Drawing.Color.White;
-			this.btnPref.Location = new System.Drawing.Point(0, 0);
-			this.btnPref.Name = "btnPref";
-			this.btnPref.Size = new System.Drawing.Size(199, 120);
-			this.btnPref.TabIndex = 0;
-			this.btnPref.Text = "Preferences";
-			this.btnPref.UseVisualStyleBackColor = true;
-			// 
-			// pnlDisplay
-			// 
-			this.pnlDisplay.Location = new System.Drawing.Point(200, 20);
-			this.pnlDisplay.Name = "pnlDisplay";
-			this.pnlDisplay.Size = new System.Drawing.Size(1000, 780);
-			this.pnlDisplay.TabIndex = 1;
 			// 
 			// panel2
 			// 
@@ -333,6 +261,79 @@
 			this.button1.TabIndex = 0;
 			this.button1.Text = "button1";
 			this.button1.UseVisualStyleBackColor = true;
+			// 
+			// btnExit
+			// 
+			this.btnExit.FlatAppearance.BorderSize = 0;
+			this.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnExit.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.btnExit.ForeColor = System.Drawing.Color.White;
+			this.btnExit.Location = new System.Drawing.Point(1, 659);
+			this.btnExit.Name = "btnExit";
+			this.btnExit.Size = new System.Drawing.Size(198, 120);
+			this.btnExit.TabIndex = 4;
+			this.btnExit.Text = "Exit";
+			this.btnExit.UseVisualStyleBackColor = true;
+			// 
+			// btnHelp
+			// 
+			this.btnHelp.FlatAppearance.BorderSize = 0;
+			this.btnHelp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.btnHelp.ForeColor = System.Drawing.Color.White;
+			this.btnHelp.Location = new System.Drawing.Point(1, 360);
+			this.btnHelp.Name = "btnHelp";
+			this.btnHelp.Size = new System.Drawing.Size(198, 120);
+			this.btnHelp.TabIndex = 3;
+			this.btnHelp.Text = "Help";
+			this.btnHelp.UseVisualStyleBackColor = true;
+			// 
+			// btnSearch
+			// 
+			this.btnSearch.FlatAppearance.BorderSize = 0;
+			this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.btnSearch.ForeColor = System.Drawing.Color.White;
+			this.btnSearch.Location = new System.Drawing.Point(1, 240);
+			this.btnSearch.Name = "btnSearch";
+			this.btnSearch.Size = new System.Drawing.Size(198, 120);
+			this.btnSearch.TabIndex = 2;
+			this.btnSearch.Text = "Search";
+			this.btnSearch.UseVisualStyleBackColor = true;
+			// 
+			// btnForce
+			// 
+			this.btnForce.FlatAppearance.BorderSize = 0;
+			this.btnForce.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnForce.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.btnForce.ForeColor = System.Drawing.Color.White;
+			this.btnForce.Location = new System.Drawing.Point(1, 120);
+			this.btnForce.Name = "btnForce";
+			this.btnForce.Size = new System.Drawing.Size(198, 120);
+			this.btnForce.TabIndex = 1;
+			this.btnForce.Text = "Force Sync";
+			this.btnForce.UseVisualStyleBackColor = true;
+			// 
+			// btnPref
+			// 
+			this.btnPref.FlatAppearance.BorderSize = 0;
+			this.btnPref.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnPref.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.btnPref.ForeColor = System.Drawing.Color.White;
+			this.btnPref.Location = new System.Drawing.Point(1, 0);
+			this.btnPref.Name = "btnPref";
+			this.btnPref.Size = new System.Drawing.Size(198, 120);
+			this.btnPref.TabIndex = 0;
+			this.btnPref.Text = "Preferences";
+			this.btnPref.UseVisualStyleBackColor = true;
+			// 
+			// pnlDisplay
+			// 
+			this.pnlDisplay.Location = new System.Drawing.Point(200, 20);
+			this.pnlDisplay.Name = "pnlDisplay";
+			this.pnlDisplay.Size = new System.Drawing.Size(1000, 780);
+			this.pnlDisplay.TabIndex = 1;
+			this.pnlDisplay.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlDisplay_Paint);
 			// 
 			// pnlTitle
 			// 

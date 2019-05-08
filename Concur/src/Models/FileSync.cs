@@ -14,6 +14,9 @@ namespace Concur
 		private int _syncTime;
 		private string _name;
 
+		// After a folder(s) has been added/removed
+		private bool _updating;
+
 		public int ID { get; private set; }
 		// TODO last sync should get an int timestamp and convert it into a custom string
 		public string LastSync { get; private set; } // make a time formatter...
@@ -55,16 +58,20 @@ namespace Concur
 			else
 				LastSync = lastSync;
 
+			_updating = false;
 			CalculateSignature();
 		}
 
 		private void CalculateSignature()
 		{
-			long result = 0;
-			foreach (Folder fold in _folders)
-				for (int i = 0; i < fold.Path.Length; i++)
-					result += System.Convert.ToInt32(fold.Path[i]);
-			_signature = (int)(result % int.MaxValue);
+			if (_updating == false)
+			{
+				long result = 0;
+				foreach (Folder fold in _folders)
+					for (int i = 0; i < fold.Path.Length; i++)
+						result += System.Convert.ToInt32(fold.Path[i]);
+				_signature = (int)(result % int.MaxValue);
+			}
 		}
 
 		// return false for failure, return true for success
@@ -121,7 +128,7 @@ namespace Concur
 				for (int i = 0; i < folders.Count; i++)
 				{
 					List<Folder> newFolders = new List<Folder>();
-					foreach (Folder fold in folders[i].Folders())
+					foreach (Folder fold in folders[i].SubFolders())
 					{
 						for (int j = 0; j < folders.Count; j++)
 						{
@@ -151,6 +158,24 @@ namespace Concur
 			return result;
 		}
 
+		public Folder GetFolder(string name)
+		{
+			foreach (Folder folder in _folders)
+				if (folder.Name == name)
+					return folder;
+
+			throw new System.Exception("Folder " + name + " not found");
+		}
+
+		public bool FolderExists(string name)
+		{
+			bool exists = false;
+			foreach (Folder folder in _folders)
+				exists |= folder.Name == name;
+
+			return exists;
+		}
+
 		public List<Folder> Folders()
 		{
 			return _folders;
@@ -158,10 +183,63 @@ namespace Concur
 
 		public void Folders(string[] folders)
 		{
+			_folders = new List<Folder>();
+			AddFolders(folders);
+		}
+
+		public void AddFolders(string[] folders)
+		{
+			_updating = true;
 			foreach (string str in folders)
-			{
-				_folders.Add(new Folder(str));
-			}
+				AddFolder(str);
+			_updating = false;
+
+			// After adding all the new folders in, recalculate the signature.
+			CalculateSignature();
+		}
+
+		public void AddFolder(string folder)
+		{
+			if (!FolderExists(folder))
+				_folders.Add(new Folder(folder));
+			else
+				throw new System.Exception("Folder already exists in this sync");
+
+			// if this is a singular add folder then calcuate will happen
+			CalculateSignature();
+		}
+
+		public void RemoveFolders(string[] foldernames)
+		{
+			_updating = true;
+			foreach (string name in foldernames)
+				RemoveFolder(name);
+			_updating = false;
+
+			// after removing all specified folders, recalculate the signature.
+			CalculateSignature();
+		}
+
+		public void RemoveFolder(string name)
+		{
+			foreach (Folder folder in _folders)
+				if (folder.Name == name)
+					_folders.Remove(folder);
+
+			// if this is a singular remove folder then calcuate will happen
+			CalculateSignature();
+		}
+
+		public void UpdateFolder(string oldname, string newname, string newpath)
+		{
+			Folder folder = GetFolder(oldname);
+			folder.UpdateFolder(newname, newpath);
+		}
+
+		public void UpdateFolder(string name, string newpath)
+		{
+			Folder folder = GetFolder(name);
+			folder.UpdateFolder(newpath);
 		}
 
 		public int Signature()

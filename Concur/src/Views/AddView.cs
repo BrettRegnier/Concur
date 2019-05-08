@@ -144,7 +144,7 @@ namespace Concur
 			if (fileSyncer == null)
 				fileSyncer = new FileSync("TODO", str);
 			else
-				fileSyncer.Folders(str);
+				fileSyncer.AddFolders(str);
 			DialogResult = DialogResult.OK;
 			this.Close();
 		}
