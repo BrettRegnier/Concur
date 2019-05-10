@@ -223,12 +223,16 @@ namespace Concur
 
 		public void RemoveFolder(string name)
 		{
-			foreach (Folder folder in _folders)
-				if (folder.Name == name)
-					_folders.Remove(folder);
-
-			// if this is a singular remove folder then calcuate will happen
-			CalculateSignature();
+			for (int i = 0; i < _folders.Count; i++)
+			{
+				if (_folders[i].Name == name)
+				{
+					_folders.Remove(_folders[i]);
+					// if this is a singular remove folder then calcuate will happen
+					CalculateSignature();
+					break;
+				}
+			}
 		}
 
 		public void UpdateFolder(string oldname, string newname, string newpath)

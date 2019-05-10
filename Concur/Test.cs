@@ -24,7 +24,7 @@ namespace Concur
 
 			for (int i = 0; i < 5; i++)
 			{
-				string[] s = new string[10];
+				string[] s = new string[2];
 				for (int j = 0; j < s.Length; j++)
 					s[j] = "test" + i.ToString();
 				AddSyncView("test" + i.ToString(), s);

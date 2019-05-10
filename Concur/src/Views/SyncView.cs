@@ -321,7 +321,6 @@ namespace Concur
 						bool find = false;
 						if (foldersPanel.Controls.Count > 2)
 						{
-
 							for (int i = 0; i < foldersPanel.Controls.Count; i++)
 							{
 
@@ -337,6 +336,9 @@ namespace Concur
 							path.Text = "";
 							ShowPlaceholderText(path, null);
 						}
+
+						fs.RemoveFolder(name.Text);
+						ListDirectory(tree, fs);
 					}
 				};
 
@@ -394,30 +396,49 @@ namespace Concur
 			tree.ForeColor = color;
 
 			bool isCascading = false;
-			TreeNode root;
-			TreeNode clickedNode;
 			tree.AfterCheck += (sender, e) =>
 			{
 				if (!isCascading)
 				{
 					isCascading = true;
 					Cascade(e.Node);
+					CascadeSimilar(e.Node);
+					isCascading = false;
 				}
 			};
 
 			void Cascade(TreeNode node)
 			{
-				// TODO
-				// cascade children
 				foreach (TreeNode child in node.Nodes)
 				{
-
+					child.Checked = node.Checked;
+					Cascade(child);
+					CascadeSimilar(child);
 				}
+			}
 
-				//cascade parents
+			void CascadeSimilar(TreeNode target)
+			{
+				// Depth first search
+				Stack<TreeNode> stack = new Stack<TreeNode>();
 
-				//cascade equal?? maybe.
+				TreeNode node = new TreeNode();
+				for (int i = 0; i < tree.Nodes.Count; i++)
+					stack.Push(tree.Nodes[i]);
+				while (stack.Count > 0)
+				{
+					node = stack.Pop();
+					if (node.Text == target.Text)
+						node.Checked = target.Checked;
 
+					for (int i = 0; i < node.Nodes.Count; i++)
+					{
+						if (node.Nodes[i].Text == target.Text)
+							node.Nodes[i].Checked = target.Checked;
+
+						stack.Push(node.Nodes[i]);
+					}
+				}
 			}
 
 			ListDirectory(tree, fs);
