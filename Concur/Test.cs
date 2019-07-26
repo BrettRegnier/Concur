@@ -12,6 +12,9 @@ namespace Concur
 {
 	public partial class Test : Form
 	{
+		bool drag = false;
+		Point mos;
+
 		public Test()
 		{
 			InitializeComponent();
@@ -99,6 +102,27 @@ namespace Concur
 				Color.Transparent, 0, ButtonBorderStyle.Solid,
 				Color.White, 1, ButtonBorderStyle.Solid,
 				Color.White, 1, ButtonBorderStyle.Solid);
+		}
+
+		private void pnlTitle_MouseDown(object sender, MouseEventArgs e)
+		{
+			drag = true;
+			mos = e.Location;
+		}
+
+		private void pnlTitle_MouseUp(object sender, MouseEventArgs e)
+		{
+			drag = false;
+		}
+
+		private void pnlTitle_MouseMove(object sender, MouseEventArgs e)
+		{
+			if (drag)
+			{
+
+				this.Left = (this.Left -  mos.X) + e.X;
+				this.Top = (this.Top - mos.Y) + e.Y;
+			}
 		}
 	}
 }

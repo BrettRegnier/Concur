@@ -31,6 +31,7 @@
 			this.pnlMenu = new System.Windows.Forms.Panel();
 			this.panel2 = new System.Windows.Forms.Panel();
 			this.panel4 = new System.Windows.Forms.Panel();
+			this.panel5 = new System.Windows.Forms.Panel();
 			this.label9 = new System.Windows.Forms.Label();
 			this.panel3 = new System.Windows.Forms.Panel();
 			this.label5 = new System.Windows.Forms.Label();
@@ -55,7 +56,6 @@
 			this.btnPref = new System.Windows.Forms.Button();
 			this.pnlDisplay = new System.Windows.Forms.Panel();
 			this.pnlTitle = new System.Windows.Forms.Panel();
-			this.panel5 = new System.Windows.Forms.Panel();
 			this.pnlMenu.SuspendLayout();
 			this.panel2.SuspendLayout();
 			this.panel4.SuspendLayout();
@@ -102,6 +102,13 @@
 			this.panel4.Name = "panel4";
 			this.panel4.Size = new System.Drawing.Size(1000, 219);
 			this.panel4.TabIndex = 9;
+			// 
+			// panel5
+			// 
+			this.panel5.Location = new System.Drawing.Point(497, 27);
+			this.panel5.Name = "panel5";
+			this.panel5.Size = new System.Drawing.Size(497, 189);
+			this.panel5.TabIndex = 9;
 			// 
 			// label9
 			// 
@@ -344,13 +351,9 @@
 			this.pnlTitle.Size = new System.Drawing.Size(1200, 20);
 			this.pnlTitle.TabIndex = 2;
 			this.pnlTitle.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlTitle_Paint);
-			// 
-			// panel5
-			// 
-			this.panel5.Location = new System.Drawing.Point(497, 27);
-			this.panel5.Name = "panel5";
-			this.panel5.Size = new System.Drawing.Size(497, 189);
-			this.panel5.TabIndex = 9;
+			this.pnlTitle.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnlTitle_MouseDown);
+			this.pnlTitle.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pnlTitle_MouseMove);
+			this.pnlTitle.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pnlTitle_MouseUp);
 			// 
 			// Test
 			// 
