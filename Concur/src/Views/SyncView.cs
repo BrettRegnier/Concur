@@ -36,6 +36,12 @@ namespace Concur
 		Panel _editPanel = new Panel();
 
 		bool _isEditting = false;
+		int minHeight = 41;
+		int maxHeight = 343;
+		int expectedHeight = 0;
+
+		System.Threading.ThreadStart accordionStart;
+		System.Threading.Thread editThread;
 
 		public FileSync FileSync { get { return _fileSync; } }
 
@@ -136,30 +142,40 @@ namespace Concur
 
 			this.ResumeLayout(false);
 			this.PerformLayout();
+
+			_editPanel.Visible = false;
+			this.Controls.Add(_editPanel);
+			Panel.CheckForIllegalCrossThreadCalls = false;
+
+			accordionStart = new System.Threading.ThreadStart(Accordion);
+			editThread = new System.Threading.Thread(accordionStart);
 		}
 
 		private void Edit_Click(object sender, EventArgs e)
 		{
-			int addHeight = 302;
 			if (!_isEditting)
 			{
 
 				// a new panel should be added, which is the editting panel
 				CreateEditPanel(_fileSync);
+				_editPanel.Visible = true;
 
-				this.Controls.Add(_editPanel);
-				this.Height += addHeight;
 				_isEditting = true;
+				expectedHeight = maxHeight;
 			}
 			else
 			{
-				this.Controls.Remove(_editPanel);
-				this.Height -= addHeight;
-
 				_isEditting = false;
-				_editPanel = new Panel();
+				expectedHeight = minHeight;
 			}
-			UpdateView(ButtonType.Edit, this);
+
+			// I think a new thread has to be made after the thread is terminated...?
+			if (!editThread.IsAlive)
+			{
+				editThread.Start();
+				editThread = new System.Threading.Thread(accordionStart);
+			}
+			
 		}
 		private void CreateEditPanel(FileSync fs, string location = "Example: C:\\MyFolder")
 		{
@@ -223,7 +239,7 @@ namespace Concur
 					graphics.Dispose();
 				};
 				name.MouseLeave += (sender, e) => { panel.Invalidate(); };
-				name.TextChanged += (sender, e) => 
+				name.TextChanged += (sender, e) =>
 				{
 					nameChanged = false;
 					if (name.Text != prevName) nameChanged = true;
@@ -269,7 +285,7 @@ namespace Concur
 					if (nameChanged || pathChanged) accept.Enabled = true;
 					else accept.Enabled = false;
 				}
-				
+
 				accept.Image = Properties.Resources.accept;
 				accept.Width = 36;
 				accept.UseVisualStyleBackColor = true;
@@ -448,6 +464,45 @@ namespace Concur
 
 			_editPanel.Controls.Add(treeLabel);
 			_editPanel.Controls.Add(tree);
+		}
+
+		private void Accordion()
+		{
+			int updateVal = 20;
+			bool updatingUI = true;
+
+			long tickCount = 0;
+			while (updatingUI)
+			{
+				if (Environment.TickCount >= tickCount + 15)
+				{
+					tickCount = Environment.TickCount;
+
+					if (_isEditting)
+					{
+						if (this.Height + updateVal <= expectedHeight)
+							this.Height += updateVal;
+						else
+						{
+							this.Height = expectedHeight;
+							updatingUI = false;
+						}
+					}
+					else
+					{
+						if (this.Height - updateVal >= expectedHeight)
+							this.Height -= updateVal;
+						else
+						{
+							this.Height = expectedHeight;
+							_editPanel = new Panel();
+							updatingUI = false;
+						}
+					}
+				}
+				UpdateView(ButtonType.Edit, this);
+			}
+			this.Invalidate();
 		}
 
 		private void Remove_Click(object sender, EventArgs e)
